@@ -40,12 +40,7 @@ jobs:
           ./scripts/fetch-proot.sh
           if [ -n "$KALI_KEYSTORE_B64" ]; then
             echo "$KALI_KEYSTORE_B64" | base64 -d > kalilauncher.jks
-            cat > keystore.properties <<EOF
-storeFile=kalilauncher.jks
-storePassword=$KALI_KEYSTORE_PASS
-keyAlias=kalilauncher
-keyPassword=$KALI_KEYSTORE_PASS
-EOF
+            { echo "storeFile=kalilauncher.jks"; echo "storePassword=$KALI_KEYSTORE_PASS"; echo "keyAlias=kalilauncher"; echo "keyPassword=$KALI_KEYSTORE_PASS"; } > keystore.properties
           fi
           ./gradlew :app:assembleDebug :app:lintDebug
 
