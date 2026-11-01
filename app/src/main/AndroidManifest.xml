@@ -125,6 +125,13 @@
             android:targetActivity=".LinuxWindowActivity" />
 
         <activity-alias
+            android:name=".HermesWindow"
+            android:exported="false"
+            android:icon="@drawable/agent_hermes"
+            android:label="Hermes"
+            android:targetActivity=".LinuxWindowActivity" />
+
+        <activity-alias
             android:name=".OpencodeWindow"
             android:exported="false"
             android:icon="@drawable/agent_opencode"

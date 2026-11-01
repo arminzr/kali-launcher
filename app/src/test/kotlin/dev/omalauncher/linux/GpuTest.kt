@@ -107,7 +107,7 @@ class GpuTest {
         assertTrue(script.contains("d7e22a8be00e94482a0bfc7b769f4c7c9b03573532f3257c42242d1502e9f69f  /tmp/omalauncher-gpu-extract/usr/lib/libvulkan_freedreno.so"))
         assertTrue(script.contains("tar -xJf /tmp/omalauncher-gpu.pkg.tar.xz -C /tmp/omalauncher-gpu-extract usr/lib/libvulkan_freedreno.so"))
         assertTrue(script.contains("'spirv-tools'"))
-        assertTrue(script.contains("'xcb-util-keysyms'"))
+        assertTrue(script.contains("'libxcb-keysyms1'"))
         assertTrue(script.contains("\"api_version\":\"1.4.359\""))
         assertTrue(script.contains("> '/usr/local/share/vulkan/icd.d/freedreno_icd.aarch64.json'"))
         assertTrue(trapCoversCurl(script))
