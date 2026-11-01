@@ -281,7 +281,7 @@ private fun UpdatesBox(
     }
 }
 
-/** Pending pacman and agent updates, from the last check; "update" runs them as one job. */
+/** Pending apt and agent updates, from the last check; "update" runs them as one job. */
 @Composable
 private fun LinuxUpdatesRows(runtime: Runtime) {
     val updates = runtime.updates

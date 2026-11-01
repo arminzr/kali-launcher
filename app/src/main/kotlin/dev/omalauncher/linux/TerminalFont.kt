@@ -80,7 +80,7 @@ class TerminalFont(
         write()
     }
 
-    /** Lists the guest's monospace fonts into [families], as omarchy-font-list does; one installed with pacman shows up here. */
+    /** Lists the guest's monospace fonts into [families], as omarchy-font-list does; one installed with apt shows up here. */
     suspend fun refreshFamilies() {
         val found =
             withContext(Dispatchers.IO) {

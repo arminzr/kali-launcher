@@ -89,6 +89,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.ui)
     implementation(libs.commons.compress)
+    // commons-compress needs XZ for Java to read the .tar.xz rootfs.
+    implementation("org.tukaani:xz:1.10")
     implementation(libs.androidsvg)
     implementation(libs.zxing.core)
     implementation(project(":owl"))

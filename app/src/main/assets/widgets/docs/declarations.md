@@ -133,14 +133,14 @@ widget "grok" {
 ```
 
 - When a declared package is missing, the tile says `needs jq` with an **install** button
-  instead of running the widget. That runs `pacman -Syu --needed`, the same way the system was
+  instead of running the widget. That runs `apt-get install` (with `--no-install-recommends`), the same way the system was
   set up. If it fails, the tile offers **fix with agent**.
 - Names are package names, not program names (`dig` comes from `bind`). Find the owner of a
-  program with `pacman -F dig` or `pacman -Qo $(command -v dig)`.
+  program with `dpkg -S $(command -v dig)`.
 - Base tools (coreutils, grep, sed, bash) are always there; declaring them is optional.
 - The launcher also reads the programs your fixed commands run. If one isn't installed and
   isn't covered by `requires`, `.errors/<file>.txt` gets a warning.
-- While writing a widget, install what you declare with `pacman -S --needed <packages>`.
+- While writing a widget, install what you declare with `apt-get install <packages>`.
 
 ## Without Linux
 
@@ -157,7 +157,7 @@ until Linux is installed and running, and `linux` says whether it is:
 widget "kernel" {
   meta { owl: 5 }
   source sys = android.system every 1m
-  source pkgs = cmd("pacman -Qq | wc -l") every 10m optional
+  source pkgs = cmd("dpkg -l | grep -c '^ii'") every 10m optional
   Column {
     Text { text: "kernel ${sys.kernel}" }
     if linux {
@@ -170,7 +170,7 @@ widget "kernel" {
 ```
 
 `optional` works on `cmd`, `stream` and `file`. Keep such a widget's commands to base tools
-(coreutils, grep, sed, awk, bash, pacman): `requires` makes a widget need Linux again.
+(coreutils, grep, sed, awk, bash, apt): `requires` makes a widget need Linux again.
 
 ## Text in more languages
 

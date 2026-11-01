@@ -20,7 +20,7 @@ import dev.omalauncher.LauncherData
 import dev.omalauncher.Runtime
 import dev.omalauncher.linux.Agent
 import dev.omalauncher.linux.Proot
-import dev.omalauncher.linux.pacmanInstall
+import dev.omalauncher.linux.aptInstall
 import dev.omalauncher.linux.runJob
 import dev.omalauncher.ui.Palette
 import dev.omalauncher.theme.Style
@@ -738,7 +738,7 @@ class WidgetEngine(
             when {
                 program.terminal -> "Terminal tiles aren't previewed"
                 waitsForLinux(spec) -> "it needs Linux, which isn't installed"
-                !missing[name].isNullOrEmpty() -> "it needs ${missing[name]!!.joinToString(" ")}; install with pacman -S --needed"
+                !missing[name].isNullOrEmpty() -> "it needs ${missing[name]!!.joinToString(" ")}; install with apt-get install"
                 instance(spec) == null -> "it isn't running"
                 else -> null
             }
@@ -976,7 +976,7 @@ class WidgetEngine(
     }
 
     /**
-     * Checks, in one guest shell call, which declared pacman packages are
+     * Checks, in one guest shell call, which declared guest packages are
      * missing and which programs the commands use that aren't installed. A
      * program that's missing and undeclared is reported, so the author adds it
      * to `requires`.
@@ -1012,14 +1012,14 @@ class WidgetEngine(
     /** Warnings already written, per file version, so reloads don't repeat them. */
     private val warned = HashSet<String>()
 
-    /** Installs a widget's missing packages the way the bootstrap does: a full sync, so no partial upgrades. */
+    /** Installs a widget's missing packages the way the bootstrap does: apt-get update first. */
     fun installDependencies(spec: WidgetSpec) {
         val name = spec.file.name
         val packages = missing[name].orEmpty()
         if (packages.isEmpty() || installs[name] == Install.Running) return
         installs[name] = Install.Running
         scope.launch {
-            val (ok, tail) = runtime.pacman.lock.withLock { withContext(Dispatchers.IO) { proot.runJob(pacmanInstall(packages)) } }
+            val (ok, tail) = runtime.pacman.lock.withLock { withContext(Dispatchers.IO) { proot.runJob(aptInstall(packages)) } }
             if (ok) installs.remove(name) else installs[name] = Install.Failed(tail.toString())
             // Other widgets may have been waiting on the same packages.
             checkDependencies(specs.toList())

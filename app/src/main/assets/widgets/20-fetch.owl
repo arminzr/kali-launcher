@@ -15,7 +15,7 @@ widget "fetch" {
       speed: "speed"; received: "received"; sent: "sent"; mobile: "mobile"; level: "level"; temperature: "temperature"
       voltage: "voltage"; health: "health"; cycles: "cycles"; technology: "technology"; version: "version"
       explicit: "explicit"; upgraded: "upgraded"; never: "never"; unknown: "unknown"; installLinux: "install linux"
-      notInstalled: "not installed. arch linux arm adds a terminal, agents and pacman to the launcher."
+      notInstalled: "not installed. kali linux adds a terminal, agents and apt to the launcher."
       upTo: ghz => " · up to ${ghz} GHz"
       androidApps: n => "${n} android apps"
       appCount: n => "${n} apps"
@@ -29,7 +29,7 @@ widget "fetch" {
       level: "level"; temperature: "suhu"; voltage: "tegangan"; health: "kondisi"; cycles: "siklus"
       technology: "teknologi"; version: "versi"; explicit: "diinstal manual"; upgraded: "diperbarui"; never: "belum pernah"
       unknown: "tidak diketahui"; installLinux: "instal linux"
-      notInstalled: "belum terinstal. arch linux arm menambahkan terminal, agen, dan pacman ke launcher."
+      notInstalled: "belum terinstal. kali linux menambahkan terminal, agen, dan apt ke launcher."
       upTo: ghz => " · hingga ${ghz} GHz"
       androidApps: n => "${n} aplikasi android"
       appCount: n => "${n} aplikasi"
@@ -48,7 +48,7 @@ widget "fetch" {
       level: "nivel"; temperature: "temperatura"; voltage: "voltaje"; health: "salud"; cycles: "ciclos"
       technology: "tecnología"; version: "versión"; explicit: "explícitos"; upgraded: "actualizado"; never: "nunca"
       unknown: "desconocido"; installLinux: "instalar linux"
-      notInstalled: "no instalado. arch linux arm suma una terminal, agentes y pacman al launcher."
+      notInstalled: "no instalado. kali linux suma una terminal, agentes y apt al launcher."
       upTo: ghz => " · hasta ${ghz} GHz"
       androidApps: n => "${n} apps de android"
       appCount: n => "${n} apps"
@@ -67,7 +67,7 @@ widget "fetch" {
       level: "nível"; temperature: "temperatura"; voltage: "tensão"; health: "saúde"; cycles: "ciclos"
       technology: "tecnologia"; version: "versão"; explicit: "explícitos"; upgraded: "atualizado"; never: "nunca"
       unknown: "desconhecido"; installLinux: "instalar linux"
-      notInstalled: "não instalado. o arch linux arm adiciona um terminal, agentes e o pacman ao launcher."
+      notInstalled: "não instalado. o kali linux adiciona um terminal, agentes e o apt ao launcher."
       upTo: ghz => " · até ${ghz} GHz"
       androidApps: n => "${n} apps android"
       appCount: n => "${n} apps"
@@ -86,7 +86,7 @@ widget "fetch" {
       level: "ladestand"; temperature: "temperatur"; voltage: "spannung"; health: "zustand"; cycles: "ladezyklen"
       technology: "technologie"; version: "version"; explicit: "explizit"; upgraded: "aktualisiert"; never: "nie"
       unknown: "unbekannt"; installLinux: "linux installieren"
-      notInstalled: "nicht installiert. arch linux arm bringt ein terminal, agenten und pacman in den launcher."
+      notInstalled: "nicht installiert. kali linux bringt ein terminal, agenten und apt in den launcher."
       upTo: ghz => " · bis ${ghz} GHz"
       androidApps: n => "${n} android-apps"
       appCount: n => "${n} apps"
@@ -105,7 +105,7 @@ widget "fetch" {
       level: "电量"; temperature: "温度"; voltage: "电压"; health: "健康度"; cycles: "循环次数"
       technology: "类型"; version: "版本"; explicit: "手动安装"; upgraded: "上次升级"; never: "从未"
       unknown: "未知"; installLinux: "安装 linux"
-      notInstalled: "未安装。arch linux arm 为启动器带来终端、智能体和 pacman。"
+      notInstalled: "未安装。kali linux 为启动器带来终端、智能体和 apt。"
       upTo: ghz => " · 最高 ${ghz} GHz"
       androidApps: n => "${n} 个 android 应用"
       appCount: n => "${n} 个应用"
@@ -122,15 +122,15 @@ widget "fetch" {
   source dev = android.device
   source sys = android.system every 5s
   source bat = android.battery
-  // The Arch side, once Linux is installed. Base tools only, so it doesn't make the widget need Linux.
+  // The Linux side, once Linux is installed. Base tools only, so it doesn't make the widget need Linux.
   source net = android.network every 5s
   // Where the launcher is itself Linux, android.system already has these facts, and this never runs.
   source lxCmd = cmd("""
     . /etc/os-release
     printf '{"os":"%s","pkgs":%s,"explicit":%s,"shell":"%s","upgraded":"%s"}' \
-      "$PRETTY_NAME" "$(pacman -Qq | wc -l)" "$(pacman -Qqe | wc -l)" \
+      "$PRETTY_NAME" "$(dpkg -l 2>/dev/null | grep -c '^ii')" "$(apt-mark showmanual 2>/dev/null | wc -l)" \
       "$(basename "$SHELL") $(bash --version | head -1 | awk '{print $4}' | cut -d'(' -f1)" \
-      "$(grep -a 'starting full system upgrade' /var/log/pacman.log 2>/dev/null | tail -1 | cut -c2-11)"
+      "$(grep -a '^Start-Date' /var/log/apt/history.log 2>/dev/null | tail -1 | cut -d' ' -f2)"
   """) every 5m json optional
 
   let lx = sys.linux ?? lxCmd
@@ -263,7 +263,7 @@ widget "fetch" {
         Line { key: str.uptime; value: sys.uptime == null ? null : fmtDuration(sys.uptime) }
       }
       if !low {
-        Line { key: str.packages; value: linux ? (lx.pkgs == null ? null : onAndroid ? "${lx.pkgs} (pacman), ${sys.apps} (${str.apps})" : "${lx.pkgs} (pacman)") : "${sys.apps} (${str.apps})" }
+        Line { key: str.packages; value: linux ? (lx.pkgs == null ? null : onAndroid ? "${lx.pkgs} (apt), ${sys.apps} (${str.apps})" : "${lx.pkgs} (apt)") : "${sys.apps} (${str.apps})" }
       }
       if !short {
         if linux {
@@ -356,7 +356,7 @@ widget "fetch" {
         Line { key: str.upgraded; value: (lx.upgraded ?? "") == "" ? str.never : lx.upgraded; size: 13; keyWidth: 110 }
         Row {
           justify: end
-          Button { text: "fastfetch ↗"; color: muted; onTap: terminal("command -v fastfetch >/dev/null && fastfetch || echo 'fastfetch is not installed: pacman -S fastfetch'", "fastfetch") }
+          Button { text: "fastfetch ↗"; color: muted; onTap: terminal("command -v fastfetch >/dev/null && fastfetch || echo 'fastfetch is not installed: apt-get install fastfetch'", "fastfetch") }
         }
       } else {
         Text { text: str.notInstalled; style: small; color: muted }

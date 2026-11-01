@@ -652,7 +652,7 @@ private fun Heading(
     }
 }
 
-/** Font names run long and pacman can add many: the picked one shows, and tapping it lists the others under it. */
+/** Font names run long and apt can add many: the picked one shows, and tapping it lists the others under it. */
 @Composable
 private fun FontOption(
     families: List<String>,

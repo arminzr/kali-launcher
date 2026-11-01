@@ -42,10 +42,10 @@ data class PendingUpdates(
 }
 
 /**
- * Updates for the guest: pacman packages and the tools mise installed (the
- * coding agents). Checking never touches the real package databases or
- * takes pacman's lock; updating is one job the user starts, never automatic:
- * Arch upgrades are big and now and then need attention.
+ * Updates for the guest: apt packages and the tools mise installed (the
+ * coding agents). Checking never changes the guest and never takes apt's
+ * lock; updating is one job the user starts, never automatic: Kali
+ * upgrades move fast and now and then need attention.
  */
 class SystemUpdates(
     private val proot: Proot,
@@ -107,19 +107,18 @@ class SystemUpdates(
         val code = runCatching { proot.run(CHECK_SCRIPT) { out.appendLine(it) } }.getOrElse { -1 }
         val text = out.toString()
         val now = System.currentTimeMillis()
-        if (code != 0 || "#pacman-error" in text) {
+        if (code != 0 || "#apt-error" in text) {
             Log.w(TAG, "check failed ($code): ${text.takeLast(300)}")
             return PendingUpdates(pending?.packages.orEmpty(), pending?.tools.orEmpty(), pending?.checkedAt ?: 0L, error = R.string.linux_updates_unreachable)
         }
         val packages =
             text
-                .substringAfter("#pacman\n")
+                .substringAfter("#apt\n")
                 .substringBefore("#mise")
                 .lines()
-                .map { it.trim() }
-                // "name old -> new"
-                .filter { it.contains(" -> ") }
-                .map { it.replace(" -> ", " → ") }
+                .mapNotNull { INST_LINE.find(it.trim()) }
+                // "Inst name (new ... [old] ...)" → "name old → new"
+                .map { "${it.groupValues[1]} ${it.groupValues[3]} → ${it.groupValues[2]}" }
         return PendingUpdates(packages, parseMise(text.substringAfter("#mise\n", "")), now)
     }
 
@@ -143,7 +142,7 @@ class SystemUpdates(
         runCatching { Versioned.writeFile(file, VERSION, data) }
     }
 
-    /** Upgrades everything: a full pacman sync, then mise's tools. Returns whether it worked. */
+    /** Upgrades everything: a refreshed index and a full upgrade, then mise's tools. Returns whether it worked. */
     suspend fun updateAll(): Boolean {
         if (job is JobState.Working) return false
         val (ok, _) = proot.trackedJob(R.string.linux_job_updating, UPDATE_SCRIPT, pacman.lock) { job = it }
@@ -156,21 +155,24 @@ class SystemUpdates(
     private companion object {
         const val VERSION = 1
 
+        /** `Inst name (newver [oldver] ...)` as `apt-get -s dist-upgrade` prints it. */
+        val INST_LINE = Regex("^Inst (\\S+) \\((\\S+).*\\[(\\S+)\\]")
+
         /**
-         * pacman against a private copy of the sync databases in /tmp (what checkupdates does,
-         * without fakeroot): the real ones stay as they are, so this can't cause a partial
-         * upgrade and never waits on pacman's lock. Then mise, if it's installed.
+         * A simulated upgrade (`-s`): nothing is changed and apt takes no lock, so this
+         * can't disturb an install and never waits on apt's own lock. A failed
+         * simulation (no lists yet, offline) is reported as an error. Then mise, if it's
+         * installed.
          */
         val CHECK_SCRIPT =
             """
             t=/tmp/omalauncher-updates
-            mkdir -p "${'$'}t"
-            ln -sfn /var/lib/pacman/local "${'$'}t/local"
-            if pacman -Sy --dbpath "${'$'}t" --logfile /dev/null >/dev/null 2>&1; then
-              echo '#pacman'
-              pacman -Qu --dbpath "${'$'}t" 2>/dev/null
+            if apt-get -s dist-upgrade 2>/dev/null > "${'$'}t"; then
+              echo '#apt'
+              grep '^Inst' "${'$'}t" || true
+              rm -f "${'$'}t"
             else
-              echo '#pacman-error'
+              echo '#apt-error'
             fi
             echo '#mise'
             if command -v mise >/dev/null; then mise outdated --json 2>/dev/null; fi
@@ -178,12 +180,14 @@ class SystemUpdates(
             """.trimIndent()
 
         /**
-         * Databases refreshed (-Syy) even if pacman thinks they're current: mirrors lag each other. The old
-         * versions go even when one tool fails to upgrade, or every updated agent stays installed twice
-         * (1.1 GB); the tool that failed keeps its old version, since its config still selects it.
+         * The index is refreshed even if apt thinks it's current: mirrors lag each other.
+         * The old versions go even when one tool fails to upgrade, or every updated agent
+         * stays installed twice (1.1 GB); the tool that failed keeps its old version,
+         * since its config still selects it. Downloaded .deb files are dropped: phones are
+         * short on storage.
          */
         val UPDATE_SCRIPT =
-            "pacman -Syyu --noconfirm && $CLEAN_PACMAN_CACHE && " +
+            "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y full-upgrade && rm -rf /var/cache/apt/archives/*.deb && " +
                 "if command -v mise >/dev/null; then $MISE_SELF_UPDATE && $MISE_NODE_FOR_AGENTS && mise upgrade; " +
                 "ok=\$?; $MISE_PRUNE; $MISE_CLEANUP; [ \$ok -eq 0 ]; fi"
     }

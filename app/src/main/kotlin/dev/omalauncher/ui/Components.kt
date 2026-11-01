@@ -381,7 +381,7 @@ fun ActionsRow(
     }
 }
 
-/** A line of a failed job that says what went wrong: pacman's and mise's errors, mise's ✗, a shell's "not found". */
+/** A line of a failed job that says what went wrong: apt's and mise's errors, mise's ✗, a shell's "not found". */
 private val ERROR_LINE = Regex("""(?i)\berror\b|✗|\bfailed\b|not found|no space left|permission denied""")
 
 /** The last lines a guest job printed, red once it failed; nothing while idle. */

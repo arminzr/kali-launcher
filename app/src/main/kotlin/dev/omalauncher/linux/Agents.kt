@@ -35,6 +35,8 @@ data class Agent(
 val AGENTS =
     listOf(
         Agent("claude", "Claude Code", R.string.linux_agent_claude, "claude"),
+        // Hermes runs its prompt as a positional argument; installs via mise's pipx backend.
+        Agent("hermes", "Hermes", R.string.linux_agent_hermes, "pipx:hermes-agent"),
         // mise installs OpenCode 2 from npm (@opencode/cli).
         Agent("opencode", "OpenCode", R.string.linux_agent_opencode, "opencode", node = true),
         Agent("codex", "Codex", R.string.linux_agent_codex, "codex"),

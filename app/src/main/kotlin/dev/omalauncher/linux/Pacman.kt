@@ -7,10 +7,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import dev.omalauncher.R
 import dev.omalauncher.upgrade.Managed
-import dev.omalauncher.upgrade.Policy
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -19,17 +16,17 @@ data class Package(
     val name: String,
     val version: String,
     val description: String,
-    /** Sync repo (core, extra, alarm, ...) or [AUR]; null for the installed list. */
+    /** The Kali repo for search hits; null for the installed list. */
     val repo: String?,
     val installed: Boolean,
 )
 
-/** Installs and removes guest packages from the settings screen, one pacman at a time. */
+/** Installs and removes guest packages from the settings screen, one apt at a time. */
 class Pacman(
     private val context: Context,
     private val proot: Proot,
 ) {
-    /** pacman holds a lock on its database; everything that runs it takes this first. */
+    /** apt holds a lock on its database; everything that runs it takes this first. */
     val lock = Mutex()
 
     /** Per-package install/remove progress. */
@@ -39,137 +36,130 @@ class Pacman(
     val revision = mutableIntStateOf(0)
 
     /**
-     * Not offered for removal: what the launcher relies on (foot, fonts, Omarchy's apps), plus
-     * `base` (`-Rns base` would take pacman and bash with it) and the keyring installs need.
-     * Everything else is either safe to remove or required by something, which pacman refuses.
+     * Not offered for removal: what the launcher relies on (foot, fonts, the apps), plus
+     * `apt` and `bash` (purging apt would take the package manager itself with it).
+     * Everything else is either safe to remove or required by something, which apt refuses.
      */
-    val core = CORE_PACKAGES + setOf("base", "archlinuxarm-keyring")
+    val core = CORE_PACKAGES + setOf("apt", "bash")
 
-    private val localDb = File(proot.rootfs, "var/lib/pacman/local")
+    /** The guest's dpkg database, readable straight from the rootfs: no proot needed. */
+    private val statusDb = File(proot.rootfs, "var/lib/dpkg/status")
 
-    /**
-     * The sync repos and the AUR together, best name matches first. AUR packages
-     * with the same name as a repo package are left out: pacman would win anyway.
-     */
-    suspend fun search(query: String): List<Package> =
-        coroutineScope {
-            val q = query.trim()
-            val aur = async { Aur.search(q) }
-            val repos = searchRepos(q)
-            val names = repos.mapTo(HashSet()) { it.name }
-            val local = localNames()
-            val fromAur = aur.await().filter { it.name !in names }.map { it.copy(installed = it.name in local) }
-            val lower = q.lowercase()
-            (repos + fromAur)
-                .sortedWith(
-                    compareBy<Package>(
-                        { it.name != lower },
-                        { !it.name.startsWith(lower) },
-                        { lower !in it.name },
-                        { it.repo == AUR },
-                        { it.name },
-                    ),
-                ).take(MAX_RESULTS)
-        }
-
-    /** `pacman -Ss` against the local sync databases. */
-    private suspend fun searchRepos(q: String): List<Package> {
+    /** Search hits from the Kali repos only, best name matches first. */
+    suspend fun search(query: String): List<Package> {
+        val q = query.trim()
         if (q.isEmpty()) return emptyList()
-        val out = output("pacman -Ss -- ${shellQuote(q)}")
-        val results = mutableListOf<Package>()
-        val lines = out.lines()
-        var i = 0
-        while (i < lines.size) {
-            val header = lines[i]
-            // "extra/btop 1.3.2-1 (group) [installed]" followed by an indented description.
-            if (header.isEmpty() || header[0].isWhitespace() || '/' !in header.substringBefore(' ')) {
-                i++
-                continue
-            }
-            val parts = header.split(' ')
-            val description = lines.getOrNull(i + 1)?.takeIf { it.startsWith(" ") }?.trim().orEmpty()
-            results +=
-                Package(
-                    name = parts[0].substringAfter('/'),
-                    version = parts.getOrElse(1) { "" },
-                    description = description,
-                    repo = parts[0].substringBefore('/'),
-                    installed = "[installed" in header,
-                )
-            i += 2
-        }
-        return results
+        val local = localNames()
+        val lower = q.lowercase()
+        return searchRepos(q)
+            .map { it.copy(installed = it.name in local) }
+            .sortedWith(
+                compareBy<Package>(
+                    { it.name != lower },
+                    { !it.name.startsWith(lower) },
+                    { lower !in it.name },
+                    { it.name },
+                ),
+            ).take(MAX_RESULTS)
     }
 
-    /**
-     * Every installed package's name, from the local database's directory names:
-     * `name-pkgver-pkgrel`, where neither version part may contain a dash.
-     */
-    private suspend fun localNames(): Set<String> =
-        withContext(Dispatchers.IO) {
-            localDb.list().orEmpty().mapTo(HashSet()) { it.substringBeforeLast('-').substringBeforeLast('-') }
+    /** `apt-cache search --names-only`: one `name - description` line per hit. */
+    private suspend fun searchRepos(q: String): List<Package> {
+        val out = output("apt-cache search --names-only -- ${shellQuote(q)}")
+        return out.lines().mapNotNull { line ->
+            val split = line.split(" - ", limit = 2)
+            val name = split.first().trim()
+            if (name.isEmpty() || name.contains(' ')) return@mapNotNull null
+            Package(
+                name = name,
+                // Versions would need one `apt-cache policy` per batch; the list reads fine without.
+                version = "",
+                description = split.getOrElse(1) { "" }.trim(),
+                repo = "kali",
+                installed = false,
+            )
         }
+    }
+
+    /** One entry of the dpkg status file: `Key: value` lines, continuation lines indented. */
+    private fun parseStatus(lines: List<String>): List<Map<String, String>> {
+        val records = mutableListOf<Map<String, String>>()
+        var fields = HashMap<String, String>()
+        fun flush() {
+            if (fields.isNotEmpty()) records += fields
+            fields = HashMap()
+        }
+        for (line in lines) {
+            when {
+                line.isEmpty() -> flush()
+                line[0].isWhitespace() -> {} // A folded Description: only its first line is kept.
+                else -> {
+                    val key = line.substringBefore(':')
+                    if (key.isNotEmpty()) fields[key] = line.substringAfter(':').trim()
+                }
+            }
+        }
+        flush()
+        return records
+    }
+
+    /** Records that are really installed, not just unpacked or half-removed. */
+    private fun parseStatusInstalled(): List<Map<String, String>> =
+        parseStatus(runCatching { statusDb.readLines() }.getOrElse { return emptyList() })
+            .filter { it["Status"] == "install ok installed" }
+
+    /** Every installed package's name, from the dpkg status file. */
+    private suspend fun localNames(): Set<String> =
+        withContext(Dispatchers.IO) { parseStatusInstalled().mapTo(HashSet()) { it["Package"].orEmpty() } }
 
     /**
-     * Explicitly installed packages (what `pacman -Qe` lists), read straight from the
-     * local database: much faster than starting proot.
+     * Manually installed packages (what `apt-mark showmanual` lists), read straight
+     * from the databases: much faster than starting proot. dpkg's status file has
+     * every installed package; the ones installed as dependencies are in
+     * extended_states as `Auto-Installed: 1`.
      */
     suspend fun installed(): List<Package> =
         withContext(Dispatchers.IO) {
-            localDb
-                .listFiles()
-                .orEmpty()
-                .mapNotNull { dir ->
-                    val fields = runCatching { parseDesc(File(dir, "desc").readLines()) }.getOrNull() ?: return@mapNotNull null
-                    // %REASON% 1 = installed as a dependency; explicit packages have no entry.
-                    if (fields["REASON"] == "1") return@mapNotNull null
-                    val name = fields["NAME"] ?: return@mapNotNull null
-                    Package(name, fields["VERSION"].orEmpty(), fields["DESC"].orEmpty(), null, installed = true)
+            val auto = HashSet<String>()
+            runCatching {
+                var name: String? = null
+                for (line in File(proot.rootfs, "var/lib/apt/extended_states").readLines()) {
+                    if (line.startsWith("Package: ")) name = line.removePrefix("Package: ")
+                    if (line == "Auto-Installed: 1") name?.let { auto += it }
+                }
+            }
+            parseStatusInstalled()
+                .filter { it["Package"] !in auto }
+                .map {
+                    Package(
+                        it["Package"].orEmpty(),
+                        it["Version"].orEmpty(),
+                        it["Description"].orEmpty(),
+                        null,
+                        installed = true,
+                    )
                 }.sortedBy { it.name }
         }
 
-    /** A local db `desc` file: `%KEY%` lines, each followed by its value (first line kept). */
-    private fun parseDesc(lines: List<String>): Map<String, String> {
-        val fields = HashMap<String, String>()
-        for (i in lines.indices) {
-            val key = lines[i]
-            if (key.length > 2 && key.startsWith('%') && key.endsWith('%')) fields[key.trim('%')] = lines.getOrNull(i + 1).orEmpty()
-        }
-        return fields
-    }
-
-    /** A full sync plus the package, like the bootstrap: never a partial upgrade. */
-    suspend fun install(pkg: Package) =
-        if (pkg.repo == AUR) {
-            run(pkg.name, R.string.linux_job_building, "/usr/local/lib/aur/install.sh ${shellQuote(pkg.name)}")
-        } else {
-            run(pkg.name, R.string.linux_job_installing, pacmanInstall(listOf(pkg.name)))
-        }
+    /** Refreshes the index and installs the package, like the bootstrap: kali-rolling moves fast. */
+    suspend fun install(pkg: Package) = run(pkg.name, R.string.linux_job_installing, aptInstall(listOf(pkg.name)))
 
     /**
-     * The AUR build scripts (assets/aur) in the guest's /usr/local/lib/aur, the fakeroot shim in its bin,
-     * and the yay wrapper that builds as a user even when called as root (by App Finder, say).
+     * Nothing managed here any more: the guest's extra provisioning scripts are gone.
+     * Kept because Runtime.kt wires every provisioner's list into the upgrade pass.
      */
-    fun managed(): List<Managed> {
-        val dir = File(proot.rootfs, "usr/local/lib/aur")
-        return listOf(
-            "install.sh" to File(dir, "install.sh"),
-            "fakeroot" to File(dir, "bin/fakeroot"),
-            "yay" to File(proot.rootfs, "usr/local/bin/yay"),
-        ).map { (asset, target) ->
-            Managed.asset(context, "aur/$asset", target, Policy.Owned, executable = true)
-        }
-    }
+    fun managed(): List<Managed> = emptyList()
 
     /** Removes the package and the dependencies nothing else needs. */
-    suspend fun remove(name: String) = run(name, R.string.linux_job_removing, "pacman -Rns --noconfirm ${shellQuote(name)}")
+    suspend fun remove(name: String) =
+        run(name, R.string.linux_job_removing, "DEBIAN_FRONTEND=noninteractive apt-get purge -y --auto-remove -- ${shellQuote(name)}")
 
     /** Kept between searches: starting proot costs more than the search. */
     private val shell = GuestShell(proot)
 
     private suspend fun output(script: String): String =
         runCatching { shell.run(script, timeoutSeconds = 30).out }.getOrElse {
-            Log.w(TAG, "pacman query failed", it)
+            Log.w(TAG, "apt query failed", it)
             ""
         }
 
@@ -185,9 +175,9 @@ class Pacman(
     }
 
     companion object {
-        private const val TAG = "pacman"
+        private const val TAG = "apt"
 
-        /** Short AUR queries match thousands of packages. */
+        /** Short queries match thousands of packages. */
         private const val MAX_RESULTS = 100
     }
 }

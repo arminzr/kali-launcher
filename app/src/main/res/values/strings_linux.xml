@@ -79,6 +79,7 @@
 
     <!-- One line under each coding agent's name in the agent lists. -->
     <string name="linux_agent_claude">Anthropic\'s coding agent</string>
+    <string name="linux_agent_hermes">Nous Research\'s Hermes Agent</string>
     <string name="linux_agent_opencode">Open source agent, any model provider</string>
     <string name="linux_agent_codex">OpenAI\'s coding agent</string>
     <string name="linux_agent_grok">xAI\'s coding agent</string>

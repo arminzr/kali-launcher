@@ -77,7 +77,7 @@ class Gpu(
         val mesaCurrent = runCatching { proot.hostFile(GpuDrivers.MESA_ZINK_STAMP).readText().trim() }
             .getOrNull() == GpuDrivers.MESA_ZINK_TAR_SHA256
         if (mesaCurrent && prefs.getString(CHECKED_BUILD, null) == build) {
-            // An older install wrote Mali's manifest on pacman's path. The env now
+            // An older install wrote Mali's manifest on apt's path. The env now
             // names the /usr/local file, so that file has to exist before we activate.
             if (!proot.hostFile(driver.icdPath).isFile) {
                 retireLegacyManifest(driver)
@@ -115,7 +115,7 @@ class Gpu(
         stageMesaBundle()
         retireLegacyManifest(driver)
         val script = GpuDrivers.installScript(driver) + " && " + GpuDrivers.probeScript(driver)
-        // The install script runs pacman.
+        // The install script runs apt.
         if (run(R.string.linux_job_installing, script, pacman.lock)) {
             activate(driver)
         } else {

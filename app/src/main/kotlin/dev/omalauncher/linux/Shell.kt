@@ -12,18 +12,19 @@ import kotlinx.coroutines.withContext
 fun shellQuote(s: String) = shQuote(s)
 
 /**
- * Installs [packages] with a full sync, never a partial upgrade, then drops
- * the downloaded packages: storage on phones is tight. [refresh] re-downloads
- * the package databases even if pacman thinks they're current: mirrors lag
- * each other, and a database from one names versions another no longer has.
+ * Installs [packages] with apt. The index is refreshed first, always: kali-rolling
+ * moves fast, and a stale index names versions the mirror no longer has. [refresh]
+ * adds a second `apt-get update` for callers that just downloaded the rootfs.
+ * Downloaded .deb files are dropped afterwards: storage on phones is tight.
  */
-fun pacmanInstall(
-    packages: Collection<String>,
+fun aptInstall(
+    packages: List<String>,
     refresh: Boolean = false,
-) = "pacman -Sy${if (refresh) "y" else ""}u --noconfirm --needed ${packages.joinToString(" ") { shellQuote(it) }} && $CLEAN_PACMAN_CACHE"
-
-/** `pacman -Scc --noconfirm` answers its "remove all?" prompt with the default, No, so delete directly. */
-const val CLEAN_PACMAN_CACHE = "rm -rf /var/cache/pacman/pkg/*"
+) = "apt-get update && " +
+    (if (refresh) "apt-get update && " else "") +
+    "DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install " +
+    packages.joinToString(" ") { shellQuote(it) } +
+    " && rm -rf /var/cache/apt/archives/*.deb"
 
 /** Progress of a guest job started from the UI: installing an agent, a package, a widget's packages. */
 sealed interface JobState {

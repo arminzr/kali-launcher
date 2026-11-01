@@ -2,7 +2,7 @@ name: ci
 
 on:
   push:
-    branches: [main]
+    branches: [main, kali]
   pull_request:
 
 permissions:
@@ -30,6 +30,15 @@ jobs:
       - name: Test
         run: ./gradlew :owl:test :app:testDebugUnitTest :owl:owlJar
 
-      # Builds without proot (scripts/fetch-proot.sh), which is enough to compile wlbridge and run lint.
+      # Builds with proot (scripts/fetch-proot.sh needs bsdtar), so the debug APK is installable.
       - name: Build and lint
-        run: ./gradlew :app:assembleDebug :app:lintDebug
+        run: |
+          sudo apt-get update && sudo apt-get install -y libarchive-tools
+          ./scripts/fetch-proot.sh
+          ./gradlew :app:assembleDebug :app:lintDebug
+
+      - name: Upload the debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: kali-launcher-debug
+          path: app/build/outputs/apk/debug/*.apk

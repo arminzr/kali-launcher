@@ -1280,7 +1280,7 @@ class WidgetInstance(
 
     /**
      * A timeout, or a non-zero exit that printed to stderr. A quiet non-zero
-     * exit is normal (grep finding nothing, pacman -Qu with no updates).
+     * exit is normal (grep finding nothing, apt -s dist-upgrade with no updates).
      */
     private fun ok(
         g: Global.Source,

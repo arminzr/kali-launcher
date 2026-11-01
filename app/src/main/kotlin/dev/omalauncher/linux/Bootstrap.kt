@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import org.apache.commons.compress.compressors.xz.XZCompressorInputStream
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.IOException
@@ -28,12 +29,11 @@ import java.net.HttpURLConnection
 import java.security.DigestInputStream
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
-import java.util.zip.GZIPInputStream
 import kotlin.concurrent.thread
 
 private const val TAG = "bootstrap"
-private const val ROOTFS_URL = "http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
-private const val TARBALL = "ArchLinuxARM-aarch64-latest.tar.gz"
+private const val ROOTFS_URL = "https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
+private const val TARBALL = "kali-nethunter-rootfs-minimal-arm64.tar.xz"
 
 /** Attempts per network step before setup (or an update) reports a failure. */
 private const val NETWORK_TRIES = 3
@@ -41,8 +41,8 @@ private const val NETWORK_TRIES = 3
 /** How long `echo | cat` may take in the guest before setup calls the phone's kernel broken; it takes well under a second. */
 private const val FORK_CHECK_SECONDS = 30L
 
-/** Room for the download (~830 MB). */
-private const val TARBALL_SPACE = 900_000_000L
+/** Room for the download (~126 MB). */
+private const val TARBALL_SPACE = 400_000_000L
 
 /** Room for the unpacked system and what setup installs into it (~1.9 GB with an agent), with some to spare. */
 private const val SYSTEM_SPACE = 2_100_000_000L
@@ -61,15 +61,15 @@ private fun Throwable.outOfSpace() =
 private fun gigabytes(bytes: Long) = "%.1f GB".format(bytes / 1e9)
 
 /**
- * Omarchy's classic terminal apps. The Nerd Font glyphs come from the
+ * Omarchy's classic terminal apps, from kali-rolling. The Nerd Font glyphs come from the
  * symbols-only font: the full JetBrainsMono Nerd family is ~200 MB.
  * Changing this list needs a new id for the packages step.
  */
 private val PACKAGES =
     listOf(
-        "foot", "ttf-dejavu", "btop", "fastfetch", "ttf-jetbrains-mono", "ttf-nerd-fonts-symbols-mono",
-        "neovim", "starship", "eza", "bat", "fd", "ripgrep", "fzf", "zoxide", "tmux", "gum", "jq", "tealdeer",
-        "man-db", "less", "dua-cli", "inxi", "whois", "git", "bash-completion", "pulseaudio", "pulseaudio-alsa", "micro",
+        "foot", "fonts-dejavu-core", "btop", "fastfetch", "fonts-jetbrains-mono", "fonts-nerd-symbols",
+        "neovim", "starship", "eza", "bat", "fd-find", "ripgrep", "fzf", "zoxide", "tmux", "gum", "jq", "tealdeer",
+        "man-db", "less", "dua-cli", "inxi", "whois", "git", "bash-completion", "pulseaudio", "micro", "python3-pip",
     )
 
 /** Omarchy's Winamp-style player; not in Arch's ARM repos, but upstream ships an arm64 build. */
@@ -77,17 +77,11 @@ private const val CLIAMP_VERSION = "v2.3.0"
 private const val CLIAMP_URL = "https://github.com/bjarneo/cliamp/releases/download/$CLIAMP_VERSION/cliamp-linux-arm64"
 private const val CLIAMP_SHA256 = "827b4aa879feecab33ea621dc1460c60ffa765c210b5046d679ce5a4073d2b32"
 
-private val MIRRORS =
-    listOf(
-        "de.mirror.archlinuxarm.org",
-        "fl.us.mirror.archlinuxarm.org",
-        "eu.mirror.archlinuxarm.org",
-        "dk.mirror.archlinuxarm.org",
-        "mirror.archlinuxarm.org",
-    )
+/** apt reads its package sources from here; http.kali.org is a geo-balanced redirector. */
+private const val APT_SOURCES = "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware\n"
 
-/** Firmware and kernel modules are useless under proot; pacman never unpacks them. */
-private const val NO_EXTRACT = "NoExtract = usr/lib/firmware/* usr/lib/modules/*"
+/** Firmware and kernel modules are useless under proot; dpkg never unpacks them. */
+private const val DPKG_EXCLUDES = "path-exclude=/usr/lib/firmware/*\npath-exclude=/usr/lib/modules/*\n"
 
 /** What the bootstrap installs; the packages screen doesn't offer to remove these. */
 val CORE_PACKAGES = PACKAGES.toSet()
@@ -148,7 +142,7 @@ private class Step(
 )
 
 /**
- * Sets up the Arch Linux ARM rootfs and keeps it current. A fresh install
+ * Sets up the Kali Linux (kali-rolling, arm64) rootfs and keeps it current. A fresh install
  * runs every [steps] entry behind the setup screen; after an app update only
  * the new ones run, see [Step].
  */
@@ -192,20 +186,17 @@ class Bootstrap(
 
     private val steps =
         listOf(
-            Step("rootfs", Stage.Download, R.string.linux_step_download, network = true) { installRootfs() },
-            Step("etc-2", Stage.Configure, R.string.linux_step_configure, network = false) { configure() },
+            Step("rootfs-kali-1", Stage.Download, R.string.linux_step_download, network = true) { installRootfs() },
+            Step("etc-kali-1", Stage.Configure, R.string.linux_step_configure, network = false) { configure() },
             // Only before the first setup: a phone where Linux already runs can fork.
             Step("forks-1", Stage.Configure, R.string.linux_step_forks, network = false, isDone = { journal.setupComplete }) {
                 checkForks()
             },
-            Step("keyring-1", Stage.Configure, R.string.linux_step_keyring, network = false) {
-                guest("pacman-key --init && pacman-key --populate archlinuxarm")
+            // Kali's rootfs ships kernel images and headers we can't use under proot.
+            Step("no-kernel-kali-1", Stage.Configure, R.string.linux_step_no_kernel, network = false) {
+                guest("export DEBIAN_FRONTEND=noninteractive; apt-get -y purge \"linux-image*\" \"linux-headers*\" 2>/dev/null; true")
             },
-            // The ALARM image ships a kernel and firmware (~1 GB, split into sub-packages) we can't use.
-            Step("no-kernel-1", Stage.Configure, R.string.linux_step_no_kernel, network = false) {
-                guest("pacman -Rdd --noconfirm linux-aarch64 \$(pacman -Qq | grep ^linux-firmware); true")
-            },
-            Step("packages-1", Stage.Packages, R.string.linux_step_packages, network = true) { guest(pacmanInstall(PACKAGES, refresh = true)) },
+            Step("packages-kali-1", Stage.Packages, R.string.linux_step_packages, network = true) { guest(aptInstall(PACKAGES, refresh = true)) },
             Step("keymap-1", Stage.Packages, R.string.linux_step_keymap, network = false, isDone = { proot.keymap.exists() }) { compileKeymap() },
             Step("cliamp-$CLIAMP_VERSION", Stage.Packages, R.string.linux_step_cliamp, network = true) { installCliamp() },
             // Omarchy's themes were a step here ("omarchy-<ref>") until Linux became optional; ThemeStore fetches them now.
@@ -215,7 +206,7 @@ class Bootstrap(
 
     /**
      * Runs the step; one that needs the network gets a few tries, since phone connections drop.
-     * Retrying is cheap: pacman keeps what it already downloaded, and downloads resume.
+     * Retrying is cheap: apt keeps what it already downloaded, and downloads resume.
      */
     private suspend fun Step.attempt() {
         repeat(if (network) NETWORK_TRIES - 1 else 0) { n ->
@@ -375,7 +366,7 @@ class Bootstrap(
             for (step in todo) {
                 _updates.value = JobState.Working(step.label, emptyList())
                 try {
-                    // Package steps run pacman; nothing else may hold its lock meanwhile.
+                    // Package steps run apt; nothing else may hold its lock meanwhile.
                     pacman.lock.withLock { step.attempt() }
                     journal.mark(step.id)
                 } catch (e: Throwable) {
@@ -538,7 +529,7 @@ class Bootstrap(
         provisioner.forgetAll()
         val total = tarball.length()
         val counter = CountingInputStream(tarball.inputStream())
-        TarArchiveInputStream(GZIPInputStream(BufferedInputStream(counter, 1 shl 16), 1 shl 16)).use { tar ->
+        TarArchiveInputStream(XZCompressorInputStream(BufferedInputStream(counter, 1 shl 16), true)).use { tar ->
             var count = 0
             while (true) {
                 checkCancelled()
@@ -584,17 +575,13 @@ class Bootstrap(
         }
         File(root, "etc/hosts").writeText("127.0.0.1 localhost\n::1 localhost\n")
         File(root, "etc/locale.conf").writeText("LANG=C.UTF-8\n")
-        // The geo-balanced default mirror often lags behind; pacman falls through this list on 404s.
-        File(root, "etc/pacman.d/mirrorlist").writeText(MIRRORS.joinToString("") { "Server = http://$it/\$arch/\$repo\n" })
-        // pacman drops privileges and uses Landlock for downloads; neither works under proot.
-        // Its low-speed timeout aborts big packages on slow phone connections, every retry.
-        val conf = File(root, "etc/pacman.conf")
-        conf.writeText(
-            conf
-                .readText()
-                .replace(Regex("(?m)^(DownloadUser|CheckSpace|DisableSandbox|DisableDownloadTimeout|NoExtract)\\b.*\n"), "")
-                .replaceFirst("[options]", "[options]\nDisableSandbox\nDisableDownloadTimeout\n$NO_EXTRACT"),
-        )
+        // The kali-rolling suite; http.kali.org is a geo-balanced redirector.
+        File(root, "etc/apt/sources.list").writeText(APT_SOURCES)
+        // Firmware and kernel modules are useless under proot, so dpkg never unpacks them.
+        File(root, "etc/dpkg/dpkg.cfg.d/kalilauncher").apply {
+            parentFile?.mkdirs()
+            writeText(DPKG_EXCLUDES)
+        }
     }
 
     private fun compileKeymap() {
@@ -614,7 +601,7 @@ class Bootstrap(
         val target = File(proot.rootfs, "usr/local/bin/cliamp")
         val tmp = File(target.parentFile, ".cliamp.download")
         val digest = MessageDigest.getInstance("SHA-256")
-        // Runs under pacman's lock, so a stalled download must time out rather than hold it.
+        // Runs under the package manager's lock, so a stalled download must time out rather than hold it.
         val conn = openHttp(CLIAMP_URL, connectTimeout = 10_000, readTimeout = 20_000)
         try {
             conn.useCaches = false
@@ -644,7 +631,7 @@ class Bootstrap(
     /**
      * Runs a pipeline, the smallest guest command that forks. Some custom ROM kernels (4.14, with Android's cgroup v2
      * freezer backported but not its follow-up, upstream 05b289263772) make every fork of a traced process restart
-     * forever (#105), and the next step, pacman-key, would hang without a word. Such a phone gets an error naming the cause.
+     * forever (#105), and the next step, the first apt-get run, would hang without a word. Such a phone gets an error naming the cause.
      */
     private fun checkForks() {
         val process = proot.process("echo forks | cat").start()

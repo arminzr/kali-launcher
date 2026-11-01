@@ -1,5 +1,9 @@
 # Omalauncher
 
+> **KaliLauncher** — an omalauncher fork whose Linux guest is Kali Linux
+> (kali-rolling, arm64) instead of Arch Linux ARM, without root, under proot.
+> Tools install via apt / kali-tools-\* metapackages from the packages screen.
+
 An Android home screen with the look of [Omarchy](https://omarchy.org), and an
 optional Arch Linux ARM system next to your phone apps. Omalauncher runs the
 system under proot, without root, and is its Wayland compositor: every Linux

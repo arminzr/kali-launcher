@@ -10,7 +10,7 @@ import java.nio.file.LinkOption
  * scripts live here, with no Android types, so they can be tested on the JVM.
  *
  * Mali keeps the PanVK-kbase blob. Adreno 6xx and newer get Turnip built for
- * KGSL, which is what Android exposes at /dev/kgsl-3d0; Arch's own Mesa talks
+ * KGSL, which is what Android exposes at /dev/kgsl-3d0; Debian's own Mesa talks
  * to DRM and would not see that node. Older Adreno GPUs are not offered:
  * Turnip cannot pass its probe there, and the install would still download.
  */
@@ -21,7 +21,7 @@ internal sealed interface DriverPayload {
     /** The URL is the library itself. */
     data class RawLibrary(val sha256: String) : DriverPayload
 
-    /** The URL is an Arch package; [member] is the library inside it. */
+    /** The URL is a Debian package archive; [member] is the library inside it. */
     data class ArchPackage(
         val packageSha256: String,
         val member: String,
@@ -39,7 +39,7 @@ internal data class GpuDriver(
     val url: String,
     val payload: DriverPayload,
     val driverPath: String,
-    /** Under /usr/local, which pacman does not own. The loader still finds it while the file exists. */
+    /** Under /usr/local, which apt does not own. The loader still finds it while the file exists. */
     val icdPath: String,
     val apiVersion: String,
     /**
@@ -47,7 +47,7 @@ internal data class GpuDriver(
      * /usr/local/omalauncher-mesa. Stock Mesa clears Zink when Wayland DRM
      * init fails, then the shm buffer stays black; that happens on every GPU
      * here, Mali included. The override keeps Zink set. The two paths select
-     * the patched libEGL and its matching zink, not Arch's.
+     * the patched libEGL and its matching zink, not Debian's.
      */
     val openGlEnv: List<String> = listOf(
         "MESA_LOADER_DRIVER_OVERRIDE=zink",
@@ -74,14 +74,14 @@ internal data class GpuDriver(
         }
 }
 
-/** Mesa's CPU Vulkan driver, from Arch's vulkan-swrast. */
+/** Mesa's CPU Vulkan driver, from mesa-vulkan-drivers (which provides lvp_icd.json). */
 internal const val LAVAPIPE_ICD = "/usr/share/vulkan/icd.d/lvp_icd.json"
 
 /**
  * Software rendering. VK_ICD_FILENAMES and VK_DRIVER_FILES name only lavapipe,
  * so the loader does not scan the default ICD directories and cannot pick up a
  * GPU driver that was left behind, while Vulkan apps still run on the CPU when
- * vulkan-swrast is installed.
+ * mesa-vulkan-drivers is installed.
  */
 internal val SOFTWARE_ENV = listOf(
     "LIBGL_ALWAYS_SOFTWARE=1",
@@ -120,9 +120,9 @@ internal fun turnipSupports(model: String?): Boolean {
 }
 
 internal object GpuDrivers {
-    private val basePackages = listOf("mesa", "vulkan-icd-loader", "vulkan-tools", "mesa-utils")
+    private val basePackages = listOf("mesa-vulkan-drivers", "vulkan-tools", "mesa-utils", "libvulkan1")
 
-    /** Removed on the way out. A previous install wrote Mali's manifest on pacman's path. */
+    /** Removed on the way out. A previous install wrote Mali's manifest on apt's path. */
     const val LEGACY_MALI_ICD = "/usr/share/vulkan/icd.d/panfrost_icd.aarch64.json"
 
     /**
@@ -145,7 +145,7 @@ internal object GpuDrivers {
     /**
      * Patched Mesa 26.2.4 (scripts/mesa/0001-egl-wayland-keep-zink-on-shm.patch and 0002-zink-acquire-swapchain-resolve-before-use.patch).
      * The tar is staged into the guest from the APK before [installScript] runs.
-     * Not on the default linker path, so software mode keeps Arch's Mesa.
+     * Not on the default linker path, so software mode keeps Debian's Mesa.
      */
     const val MESA_ZINK_BUNDLE = "/usr/local/share/omalauncher/mesa-zink.tar.xz"
     const val MESA_ZINK_LIB = "/usr/local/omalauncher-mesa/lib/libEGL_mesa.so"
@@ -180,7 +180,7 @@ internal object GpuDrivers {
         probeId = "DRIVER_ID_MESA_TURNIP",
         label = "Adreno",
         // The .so needs libSPIRV-Tools.so and libxcb-keysyms.so.1, which mesa does not always pull in.
-        packages = basePackages + listOf("spirv-tools", "xcb-util-keysyms"),
+        packages = basePackages + listOf("spirv-tools", "libxcb-keysyms1"),
         // lfdevs turnip-26.3.0-devel-20260824, the Arch aarch64 vulkan-freedreno package (KGSL, glibc).
         url = "https://github.com/lfdevs/mesa-for-android-container/releases/download/turnip-26.3.0-devel-20260824/vulkan-freedreno-1-26.3.0-1-aarch64.pkg.tar.xz",
         payload = DriverPayload.ArchPackage(
@@ -198,9 +198,9 @@ internal object GpuDrivers {
         GpuKind.TURNIP -> turnip
     }
 
-    /** Pacman for Mesa and the loader, then the pinned blob unless that exact file is already there. */
+    /** apt for Mesa and the loader, then the pinned blob unless that exact file is already there. */
     fun installScript(driver: GpuDriver): String {
-        return pacmanInstall(driver.packages) + " && " + fetch(driver) + " && " + mesaZinkScript()
+        return aptInstall(driver.packages) + " && " + fetch(driver) + " && " + mesaZinkScript()
     }
 
     /**
@@ -215,7 +215,7 @@ internal object GpuDrivers {
         val libOk = "echo '$MESA_ZINK_LIB_SHA256  $MESA_ZINK_LIB' | sha256sum -c -"
         val stamp = shellQuote(MESA_ZINK_STAMP)
         // Refuse a member that leaves the prefix or walks up. Then extract.
-        // Arch's tar is GNU tar. It has no --no-absolute-names (that flag is
+        // Debian's tar is GNU tar. It has no --no-absolute-names (that flag is
         // bsdtar) and exits 64 before unpacking. GNU tar already strips a
         // leading slash unless --absolute-names is set, which this script
         // does not pass.
@@ -251,7 +251,7 @@ internal object GpuDrivers {
             " { timeout 60 eglinfo -B -p surfaceless 2>/dev/null | grep 'renderer: zink' || { echo 'OpenGL: zink did not start on the GPU'; false; }; }; }"
     }
 
-    /** Rewrites the ICD manifest for a library that is already installed. No download, no pacman. */
+    /** Rewrites the ICD manifest for a library that is already installed. No download, no apt. */
     fun manifestScript(driver: GpuDriver): String =
         "{ echo '${driver.librarySha256}  ${driver.driverPath}' | sha256sum -c - && " + writeManifest(driver) + "; }"
 

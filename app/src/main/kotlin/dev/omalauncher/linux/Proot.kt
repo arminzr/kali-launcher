@@ -6,13 +6,13 @@ import dev.omalauncher.upgrade.Managed
 import dev.omalauncher.upgrade.Policy
 import java.io.File
 
-/** Paths and process launching for the proot'd Arch rootfs. */
+/** Paths and process launching for the proot'd Kali rootfs. */
 class Proot(
     private val context: Context,
 ) {
     private val nativeDir = File(context.applicationInfo.nativeLibraryDir)
     val filesDir: File = context.filesDir
-    val rootfs = File(filesDir, "arch")
+    val rootfs = File(filesDir, "kali")
     val tmpDir = File(filesDir, "tmp")
 
     /** Bound to XDG_RUNTIME_DIR inside the guest; holds the Wayland socket and the bridges' FIFOs. */
@@ -49,7 +49,7 @@ class Proot(
         )
 
     /**
-     * Android's Chinese, Japanese and Korean font, which the guest has none of (Arch's is ~300 MB).
+     * Android's Chinese, Japanese and Korean font, which the guest has none of (Debian's is ~300 MB).
      * Absent on some devices; the guest then goes without, as before.
      */
     private val cjkFont = File("/system/fonts/NotoSansCJK-Regular.ttc")
@@ -94,8 +94,9 @@ class Proot(
 
     /**
      * Resets what only lives as long as our process (guest processes die with
-     * it): /tmp, the runtime dir, a stale pacman lock. Writes the host-side
-     * stand-ins every guest command needs. Call once, before any guest runs.
+     * it): /tmp, the runtime dir, stale package manager locks. Writes the
+     * host-side stand-ins every guest command needs. Call once, before any
+     * guest runs.
      */
     fun prepare() {
         for (dir in listOf(tmpDir, runtimeDir)) {
@@ -108,7 +109,11 @@ class Proot(
             host.mkdirs()
             if (rootfs.isDirectory) File(rootfs, guest.removePrefix("/")).mkdirs()
         }
-        File(rootfs, "var/lib/pacman/db.lck").delete()
+        // apt's locks are fcntl-based and vanish with their holder, but a rootfs snapshot or a
+        // killed proot can leave the lock files behind; apt copes, dpkg's frontend lock does not.
+        for (lock in listOf("var/lib/dpkg/lock-frontend", "var/lib/dpkg/lock", "var/lib/apt/lists/lock")) {
+            File(rootfs, lock).delete()
+        }
         // An empty stand-in, so fontconfig lists the bound font when it reads the directory.
         if (rootfs.isDirectory) {
             val stub = File(rootfs, GUEST_CJK_FONT.removePrefix("/"))
@@ -121,7 +126,7 @@ class Proot(
         }
         for (sub in listOf("devices/system/cpu", "class", "block", "bus", "dev", "fs", "kernel")) File(sysDir, sub).mkdirs()
         // The stand-in was bound over /usr/bin/bwrap, which left proot's empty mount point there; no package owned
-        // it, so pacman refused to install bubblewrap and everything needing it (glycin, so GTK apps). A real
+        // it, so apt refused to install bubblewrap and everything needing it (glycin, so GTK apps). A real
         // bwrap is never empty.
         File(rootfs, "usr/bin/bwrap").takeIf { it.isFile && it.length() == 0L }?.delete()
         File(filesDir, "bwrap-shim").delete()

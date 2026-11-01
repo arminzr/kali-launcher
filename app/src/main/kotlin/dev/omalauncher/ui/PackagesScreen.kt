@@ -29,7 +29,7 @@ import dev.omalauncher.linux.Package
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/** Search Arch Linux ARM's repos and the AUR, install or remove packages; empty search lists what's installed. */
+/** Search Kali's repos, install or remove packages; empty search lists what's installed. */
 @Composable
 fun PackagesScreen(
     runtime: Runtime,
@@ -69,7 +69,7 @@ fun PackagesScreen(
             }
         BasicText(status, Modifier.padding(bottom = 6.dp), style = Mono.copy(color = Palette.muted))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // By repo too: a package in two repos (one the user added) is listed by pacman twice.
+            // By repo too: a package provided by several sources would otherwise be listed twice.
             items(list, key = { "${it.repo}/${it.name}" }) { pkg ->
                 PackageRow(
                     pkg = pkg,
