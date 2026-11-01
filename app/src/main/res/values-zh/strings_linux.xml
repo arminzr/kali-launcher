@@ -49,6 +49,7 @@
     <string name="linux_updates_unreachable">无法连接镜像源</string>
 
     <string name="linux_agent_claude">Anthropic 的编程智能体</string>
+    <string name="linux_agent_hermes">Nous Research 的编程智能体</string>
     <string name="linux_agent_opencode">开源智能体，支持任意模型提供商</string>
     <string name="linux_agent_codex">OpenAI 的编程智能体</string>
     <string name="linux_agent_grok">xAI 的编程智能体</string>

@@ -49,6 +49,7 @@
     <string name="linux_updates_unreachable">tidak dapat terhubung ke mirror</string>
 
     <string name="linux_agent_claude">Agen coding dari Anthropic</string>
+    <string name="linux_agent_hermes">Agen coding dari Nous Research</string>
     <string name="linux_agent_opencode">Agen open source, penyedia model apa pun</string>
     <string name="linux_agent_codex">Agen coding dari OpenAI</string>
     <string name="linux_agent_grok">Agen coding dari xAI</string>

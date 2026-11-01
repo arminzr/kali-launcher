@@ -51,6 +51,7 @@
     <string name="linux_updates_unreachable">no se pudo conectar con los mirrors</string>
 
     <string name="linux_agent_claude">El agente de programación de Anthropic</string>
+    <string name="linux_agent_hermes">El agente de programación de Nous Research</string>
     <string name="linux_agent_opencode">Agente de código abierto, con cualquier proveedor de modelos</string>
     <string name="linux_agent_codex">El agente de programación de OpenAI</string>
     <string name="linux_agent_grok">El agente de programación de xAI</string>

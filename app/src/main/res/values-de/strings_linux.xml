@@ -50,6 +50,7 @@
     <string name="linux_updates_unreachable">mirrors nicht erreichbar</string>
 
     <string name="linux_agent_claude">Coding-Agent von Anthropic</string>
+    <string name="linux_agent_hermes">Coding-Agent von Nous Research</string>
     <string name="linux_agent_opencode">Open-Source-Agent, beliebiger Modellanbieter</string>
     <string name="linux_agent_codex">Coding-Agent von OpenAI</string>
     <string name="linux_agent_grok">Coding-Agent von xAI</string>
