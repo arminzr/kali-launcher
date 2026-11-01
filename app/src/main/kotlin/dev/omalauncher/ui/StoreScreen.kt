@@ -77,7 +77,7 @@ fun StoreScreen(
     engine: WidgetEngine,
     agents: List<Agent>,
     page: Int,
-    /** The Omarchy theme in use, so previews show widgets in its colors. */
+    /** The Kali theme in use, so previews show widgets in its colors. */
     theme: String?,
     onDismiss: () -> Unit,
     /** The kind it opens on. */

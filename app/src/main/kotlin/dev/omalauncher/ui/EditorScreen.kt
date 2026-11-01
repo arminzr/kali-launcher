@@ -101,7 +101,7 @@ internal class EditorPrefs(
 }
 
 /**
- * A touch-first text editor for one guest file, in the Omarchy theme: Android's
+ * A touch-first text editor for one guest file, in the Kali theme: Android's
  * own selection, clipboard and keyboard (autocorrect included, for prose), with
  * the keys a phone keyboard lacks above it. [onFallback] runs for files it
  * can't edit (too big, binary), which micro gets instead.

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KaliLauncher</string>
-    <string name="wallpaper_label">Omarchy</string>
-    <string name="wallpaper_description">The current Omarchy theme background. System colors follow the theme.</string>
+    <string name="wallpaper_label">Kali</string>
+    <string name="wallpaper_description">The current Kali theme background. System colors follow the theme.</string>
     <!-- Names of the app's windows in Recents. -->
     <string name="activity_linux">Linux</string>
     <string name="activity_terminal">Terminal</string>

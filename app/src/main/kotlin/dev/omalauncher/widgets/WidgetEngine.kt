@@ -810,7 +810,7 @@ class WidgetEngine(
 
     /**
      * Debug builds, for the widget store's per-theme previews (scripts/store-previews.sh): once
-     * [name]'s sources have loaded, renders its tile in every bundled Omarchy theme to
+     * [name]'s sources have loaded, renders its tile in every bundled Kali theme to
      * .preview/themes/<theme>/<file>.png (an app: its view at the phone's size), then writes .preview/themes/<file>.done. Asked for by
      * writing .check/<file>.themes. The whole launcher takes each theme's colors while it runs.
      *

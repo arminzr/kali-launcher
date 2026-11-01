@@ -13,8 +13,8 @@ private val KEEP_PATHS =
     )
 
 /**
- * Omarchy's repo at [ThemeStore.OMARCHY_REF], unpacked where Omarchy keeps it
- * (~/.local/share/omarchy). A download replaces the whole directory in one
+ * Omarchy's repo at [ThemeStore.OMARCHY_REF], unpacked where Kali keeps it
+ * (~/.local/share/kalilauncher). A download replaces the whole directory in one
  * rename once complete: an interrupted one leaves the previous version, and
  * nothing lingers from it after a successful one.
  */

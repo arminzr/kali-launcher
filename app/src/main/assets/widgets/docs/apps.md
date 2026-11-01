@@ -92,7 +92,7 @@ Long-press it in the drawer to add it to home, like any app.
 file rather than an expression, since it's drawn before the app runs, and it's one of two things:
 
 - an SVG in a string, `icon: """<svg ...>...</svg>"""` (under 16 KB). `currentColor` in it becomes
-  the Omarchy theme's accent, so the icon follows theme changes; other colors stay as written.
+  the Kali theme's accent, so the icon follows theme changes; other colors stay as written.
 - an image, `asset logo = base64"..."` and `icon: logo`: a PNG (or WebP) shown as it is, scaled to
   fit a square. For a logo or artwork that has its own colors.
 

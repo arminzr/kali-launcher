@@ -24,14 +24,14 @@ private fun File.isLink() = Files.isSymbolicLink(toPath())
 
 class OmarchyTheme(
     val name: String,
-    /** Its directories, lowest first: Omarchy's, then the user's, which overrides it file by file like omarchy-theme-set. */
+    /** Its directories, lowest first: Kali's, then the user's, which overrides it file by file like omarchy-theme-set. */
     val dirs: List<File>,
     val colors: Map<String, String>,
-    /** The user's directory of it, in ~/.config/omarchy/themes, if there is one. */
+    /** The user's directory of it, in ~/.config/kalilauncher/themes, if there is one. */
     val own: File? = null,
     /** Whether [own] came from someone else's repo; see [ThemeDirs.isFromRepo]. */
     val fromRepo: Boolean = false,
-    /** The user's extra backgrounds for this theme, ~/.config/omarchy/backgrounds/<name>. */
+    /** The user's extra backgrounds for this theme, ~/.config/kalilauncher/backgrounds/<name>. */
     private val extraBackgrounds: File? = null,
 ) {
     val title get() = titleOf(name)
@@ -39,7 +39,7 @@ class OmarchyTheme(
 
     /**
      * Like omarchy-theme-switcher: a preview image of any case and type, the
-     * user's over Omarchy's, else the first background. Many themes made by
+     * user's over Kali's, else the first background. Many themes made by
      * others ship no preview; for one installed from the catalog, its
      * screenshot there stands in.
      */
@@ -63,7 +63,7 @@ class OmarchyTheme(
     fun isExtraBackground(file: File) = extraBackgrounds != null && file.parentFile == extraBackgrounds
 
     /**
-     * The files Linux gets in ~/.local/state/omarchy/current/theme, by name:
+     * The files Linux gets in ~/.local/state/kalilauncher/current/theme, by name:
      * each directory's top-level files over the last one's, without the
      * images and dotfiles (like [ThemeDirs.SOURCE_MARKER]), and without the
      * [DENIED_FROM_REPO] ones from a repo.
@@ -89,8 +89,8 @@ class OmarchyTheme(
 }
 
 /**
- * Where themes are, as on Omarchy: the release's in [builtIn], the user's own
- * in [user] (~/.config/omarchy/themes), which add themes or override parts
+ * Where themes are, as on Kali: the release's in [builtIn], the user's own
+ * in [user] (~/.config/kalilauncher/themes), which add themes or override parts
  * of one, and extra backgrounds per theme in [backgrounds].
  */
 class ThemeDirs(

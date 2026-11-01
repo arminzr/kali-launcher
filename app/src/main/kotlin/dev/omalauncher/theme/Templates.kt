@@ -1,6 +1,6 @@
 package dev.omalauncher.theme
 
-/** The subset of Omarchy's template syntax that doesn't depend on Hyprland. */
+/** The subset of Kali's template syntax that doesn't depend on Hyprland. */
 object Templates {
     private val TOKEN = Regex("""\{\{\s*([^}]+?)\s*\}\}""")
 

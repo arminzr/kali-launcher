@@ -16,16 +16,16 @@ import java.nio.file.attribute.BasicFileAttributes
 /**
  * The launcher's own data that Linux also sees. It lives outside the rootfs,
  * so it exists without Linux and survives installing or removing it; proot
- * binds it to the paths Omarchy and agents expect (see [dev.omalauncher.linux.Proot]).
+ * binds it to the paths Kali and agents expect (see [dev.omalauncher.linux.Proot]).
  */
 object LauncherData {
-    /** Omarchy's release: themes, wallpapers, templates. The guest sees ~/.local/share/omarchy. */
+    /** Kali's release: themes, wallpapers, templates. The guest sees ~/.local/share/kalilauncher. */
     fun omarchyDir(context: Context) = File(context.filesDir, "omarchy")
 
-    /** The user's own Omarchy themes. The guest sees ~/.config/omarchy/themes, where omarchy-theme-install puts them. */
+    /** The user's own Kali themes. The guest sees ~/.config/kalilauncher/themes, where omarchy-theme-install puts them. */
     fun userThemesDir(context: Context) = File(context.filesDir, "themes")
 
-    /** The user's extra backgrounds, per theme. The guest sees ~/.config/omarchy/backgrounds. */
+    /** The user's extra backgrounds, per theme. The guest sees ~/.config/kalilauncher/backgrounds. */
     fun userBackgroundsDir(context: Context) = File(context.filesDir, "backgrounds")
 
     /** Widget files. The guest sees ~/.config/omalauncher/widgets. */

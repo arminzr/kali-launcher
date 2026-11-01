@@ -25,8 +25,8 @@ can't see the phone. Terminal tiles aren't previewed. Errors also go to
 `.errors/<file>.txt`, and the tile shows them.
 
 Widgets sit on a grid of roughly square cells, 6 columns by default (a phone
-has about 12 rows), bordered like Omarchy windows and colored by the current
-Omarchy theme. Users move and resize them on the phone; where everything is
+has about 12 rows), bordered like Kali windows and colored by the current
+Kali theme. Users move and resize them on the phone; where everything is
 lives in ~/.config/omalauncher/home/layout.toml, which you can edit too (see
 docs/home.md).
 
@@ -61,7 +61,7 @@ that read it redraw. Properties are separated by newlines or `;`.
 
 A file holds declarations, then the nodes it shows:
 
-- `source x = cmd("...") every 5s` runs a bash command in this Arch system, and `x` is its output (`json` parses
+- `source x = cmd("...") every 5s` runs a bash command in this Kali system, and `x` is its output (`json` parses
   it). `http("https://...")` fetches from Android, with no Linux needed, and `ws("wss://...")` listens to a WebSocket; `stream`, `file` and `clock` are sources
   too, and `android.battery`, `android.media`, `android.notifications` and more read the phone.
 - `state x = 0` is a value handlers change (`persist` keeps it across restarts), and `let x = ...` a value worked

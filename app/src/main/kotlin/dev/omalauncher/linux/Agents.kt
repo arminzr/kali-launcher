@@ -15,7 +15,7 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.LinkOption
 
-/** A coding agent CLI, installed the way Omarchy's omarchy-default-agent does it: via mise. */
+/** A coding agent CLI, installed the way Kali's omarchy-default-agent does it: via mise. */
 data class Agent(
     val bin: String,
     val name: String,
@@ -31,7 +31,7 @@ data class Agent(
     val windowAlias get() = bin.split('-').joinToString("") { it.replaceFirstChar(Char::uppercase) } + "Window"
 }
 
-/** Omarchy's agent list (omarchy-default-agent), limited to ones mise can install on arm64. */
+/** Kali's agent list (omarchy-default-agent), limited to ones mise can install on arm64. */
 val AGENTS =
     listOf(
         Agent("claude", "Claude Code", R.string.linux_agent_claude, "claude"),
@@ -140,7 +140,7 @@ class AgentStore(
         refresh()
     }
 
-    /** Installed agents in Omarchy's order; re-read from disk after installs and removals. */
+    /** Installed agents in Kali's order; re-read from disk after installs and removals. */
     var installed by mutableStateOf<List<Agent>>(emptyList())
         private set
 
@@ -148,7 +148,7 @@ class AgentStore(
         installed = AGENTS.filter { isInstalled(it) }
     }
 
-    /** The agent the launcher opens for prompts and widget work: the picked one, else the first installed in Omarchy's order. */
+    /** The agent the launcher opens for prompts and widget work: the picked one, else the first installed in Kali's order. */
     val default: Agent? get() = installed.firstOrNull { it.bin == preferred } ?: installed.firstOrNull()
 
     fun choose(agent: Agent) {

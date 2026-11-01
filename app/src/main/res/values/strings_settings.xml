@@ -18,12 +18,12 @@
     <string name="settings_language_phone">phone\'s language</string>
     <string name="settings_linux">linux</string>
     <string name="settings_linux_installed">installed · remove</string>
-    <!-- %2$s is the setup stage, like "download arch linux". -->
+    <!-- %2$s is the setup stage, like "download kali linux". -->
     <string name="settings_linux_installing_percent">installing %1$d%% · %2$s</string>
     <string name="settings_linux_installing">installing · %1$s</string>
     <string name="settings_linux_failed">setup stopped · retry</string>
     <string name="settings_linux_removing">removing…</string>
-    <string name="settings_linux_not_installed">not installed · install Arch Linux for terminal apps and agents</string>
+    <string name="settings_linux_not_installed">not installed · install Kali Linux for terminal apps and agents</string>
     <string name="settings_agents">coding agents</string>
     <string name="settings_agents_default">default: %1$s</string>
     <string name="settings_agents_install">install Claude Code, OpenCode, …</string>

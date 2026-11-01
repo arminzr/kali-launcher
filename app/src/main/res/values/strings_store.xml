@@ -101,14 +101,14 @@
     <string name="store_added_panel">✓ in gesture settings</string>
     <string name="store_added_keybar">✓ in your widgets folder</string>
 
-    <string name="store_needs_linux_app">needs Linux: it runs commands in Arch, so it shows in the app drawer once you install Linux in settings</string>
-    <string name="store_needs_linux_widget">needs Linux: it runs commands in Arch, so it waits as a placeholder until you install Linux in settings</string>
+    <string name="store_needs_linux_app">needs Linux: it runs commands in Kali, so it shows in the app drawer once you install Linux in settings</string>
+    <string name="store_needs_linux_widget">needs Linux: it runs commands in Kali, so it waits as a placeholder until you install Linux in settings</string>
 
     <!-- %1$s lists them by package manager, like "pacman: jq, curl; aur: yay". -->
     <string name="store_installs_packages">installs packages: %1$s</string>
     <string name="store_packages_none">none</string>
     <string name="store_runs_no_commands">runs no commands</string>
-    <string name="store_runs_commands">runs these commands in Arch:</string>
+    <string name="store_runs_commands">runs these commands in Kali:</string>
 
     <!-- What's happening to an entry, while it is. -->
     <string name="store_installing">installing…</string>
@@ -132,7 +132,7 @@
     <string name="store_shared_unnamed_widget">a widget</string>
     <!-- %1$s is its version and size when it says them, like " · v1.2 · 4x2", or nothing; %2$.1f its size in kilobytes. -->
     <string name="store_shared_info">shared with you%1$s · %2$.1f KB</string>
-    <string name="store_shared_warning">Only add it if you trust whoever sent it. It runs the commands below in Arch as you, with your files and the network.</string>
+    <string name="store_shared_warning">Only add it if you trust whoever sent it. It runs the commands below in Kali as you, with your files and the network.</string>
     <!-- %1$d is the version of the widget language it needs. -->
     <string name="store_shared_needs_newer">needs a newer launcher (owl %1$d); update the launcher to add it</string>
     <!-- %1$s is its name. -->
@@ -192,10 +192,10 @@
     <string name="store_cancel">cancel</string>
     <string name="store_add">add</string>
 
-    <!-- The community themes listed on omarchy.org/themes. -->
+    <!-- The community themes the theme catalog. -->
     <string name="store_theme_title">community themes</string>
     <string name="store_theme_search">search %1$d themes</string>
-    <string name="store_theme_header">made by the community, listed on omarchy.org/themes · installed from GitHub</string>
+    <string name="store_theme_header">made by the community, installed from GitHub</string>
     <string name="store_theme_in_use">✓ in use</string>
     <!-- %1$s is the theme's name. -->
     <string name="store_theme_install_confirm">install %1$s?</string>
@@ -203,12 +203,12 @@
     <string name="store_theme_install_message">From %1$s. Linux gets its colors and wallpapers, not its scripts or terminal configs.</string>
     <!-- %2$s is the name of the user's own theme it replaces. -->
     <string name="store_theme_install_message_replaces">From %1$s. Linux gets its colors and wallpapers, not its scripts or terminal configs.\n\nIt replaces your %2$s.</string>
-    <!-- %2$s is the name of Omarchy's theme of the same name. -->
-    <string name="store_theme_install_message_over">From %1$s. Linux gets its colors and wallpapers, not its scripts or terminal configs.\n\nIt goes over Omarchy\'s %2$s; removing it brings that back.</string>
+    <!-- %2$s is the name of Kali's theme of the same name. -->
+    <string name="store_theme_install_message_over">From %1$s. Linux gets its colors and wallpapers, not its scripts or terminal configs.\n\nIt goes over Kali\'s %2$s; removing it brings that back.</string>
     <!-- %1$s is the theme's name, %2$d how many megabytes have downloaded. -->
     <string name="store_theme_installing">installing %1$s… %2$d MB</string>
     <!-- %1$s is why, an error message from the system. -->
-    <string name="store_theme_catalog_failed">couldn\'t load omarchy.org/themes: %1$s</string>
+    <string name="store_theme_catalog_failed">couldn\'t load the theme list: %1$s</string>
     <string name="store_theme_page_changed">the page changed and can\'t be read</string>
     <!-- %1$s is what the user gave as the theme's repo. -->
     <string name="store_theme_not_github">not a GitHub repo: %1$s</string>

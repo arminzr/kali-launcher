@@ -178,7 +178,7 @@ class Runtime(
             usage.recent.take(20).filter { it.startsWith("a:") }.mapTo(HashSet()) { it.substringAfter(':') } + widgets.shortcuts.items.mapNotNull(::androidKeyOf)
         }
         androidApps.start()
-        // Omarchy's Super bindings inside Linux windows; the home screen handles its own (see MainActivity).
+        // Kali's Super bindings inside Linux windows; the home screen handles its own (see MainActivity).
         keyboard.onShortcut = { code ->
             when (code) {
                 KeyEvent.KEYCODE_ENTER -> true.also { terminal(null, "Terminal") }
@@ -203,7 +203,7 @@ class Runtime(
                 context,
                 Intent()
                     .setClassName(context, context.packageName + ".$activity")
-                    .setData(Uri.parse("omarchy://window/$handle"))
+                    .setData(Uri.parse("kali://window/$handle"))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK),
             )
         }
@@ -549,7 +549,7 @@ class Runtime(
         }
         // Per agent, so a Claude and a Grok "New app" don't share an app_id.
         val slug = if (agent == null || agent.name == name) name else "${agent.bin} $name"
-        val appId = "omarchy." + slug.lowercase().replace(Regex("[^a-z0-9]+"), "-").trim('-')
+        val appId = "kali." + slug.lowercase().replace(Regex("[^a-z0-9]+"), "-").trim('-')
         launchedNames[appId] = name
         if (agent != null) launchedAgents[appId] = agent
         val args = command?.let { " -e bash -c " + shellQuote(it) }.orEmpty()

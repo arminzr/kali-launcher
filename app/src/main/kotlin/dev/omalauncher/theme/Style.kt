@@ -96,7 +96,7 @@ object ColorSpec {
 
     private val HEX = Regex("#[0-9a-f]{6}")
 
-    /** The names every theme has once [ThemeColors.resolve] ran, plus the optional ones Omarchy's themes use. */
+    /** The names every theme has once [ThemeColors.resolve] ran, plus the optional ones Kali's themes use. */
     val NAMES: Set<String> =
         buildSet {
             addAll(listOf("background", "foreground", "accent", "cursor", "muted", "selection", "selection_background", "selection_foreground"))
@@ -148,8 +148,8 @@ class Style(
         /** How much tiles and the system bars' bands cover the wallpaper, by default. */
         const val GLASS = 0.88
 
-        val THEME = Setting.Name("theme", "The Omarchy theme, by its directory name in ~/.local/share/omarchy/themes or ~/.config/omarchy/themes (yours win).")
-        val BACKGROUND = Setting.Name("background", "A file name from the theme's backgrounds/ or ~/.config/omarchy/backgrounds/<theme>/. Unset: the theme's first.")
+        val THEME = Setting.Name("theme", "The Kali theme, by its directory name in ~/.local/share/kalilauncher/themes or ~/.config/kalilauncher/themes (yours win).")
+        val BACKGROUND = Setting.Name("background", "A file name from the theme's backgrounds/ or ~/.config/kalilauncher/backgrounds/<theme>/. Unset: the theme's first.")
 
         val APP_TILES = Setting.Flag("home.app-tiles", true, "Apps on home in a tile like a widget; false draws bare icons on the wallpaper.")
         val RECENT_APPS = Setting.Flag("home.recent-apps", true, "The strip of recently used apps above the prompt bar.")
@@ -191,9 +191,9 @@ class Style(
         val KEYBAR_GAPS_OUT = Setting.Number("keybar.gaps-out", 6.0, 0.0..48.0, "Space in dp from the terminal key bar's frame to the screen's sides and the keyboard.")
         val KEYBAR_BORDER_WIDTH = Setting.Number("keybar.border-width", 2.0, 0.0..8.0, "How thick the terminal key bar's frame is, in dp. 0 draws none.")
 
-        val MONOCHROME_ICONS = Setting.Flag("icons.monochrome", false, "App icons as silhouettes in the accent color, as on Omarchy, rather than in their own colors.")
+        val MONOCHROME_ICONS = Setting.Flag("icons.monochrome", false, "App icons as silhouettes in the accent color, as on Kali, rather than in their own colors.")
 
-        val CORNER_SCALE = Setting.Number("corners.scale", 0.0, 0.0..2.0, "Multiplies every frame's corner radius: 0 square (Omarchy), 0.5 soft, 1 round like stock Android.")
+        val CORNER_SCALE = Setting.Number("corners.scale", 0.0, 0.0..2.0, "Multiplies every frame's corner radius: 0 square (Kali), 0.5 soft, 1 round like stock Android.")
 
         val STATUS_BAR = Bar("status-bar", "Android's status bar at the top of home")
         val STATUS_BAR_SHOWN = Setting.Flag("status-bar.shown", true, "Android's status bar on home; false hides it until a swipe down from the top edge.")

@@ -91,10 +91,10 @@
     <string name="style_remove">remove</string>
     <!-- %1$s is the theme's name. -->
     <string name="style_remove_theme_title">remove %1$s?</string>
-    <string name="style_remove_theme_builtin">Your changes to it go; Omarchy\'s version stays.</string>
+    <string name="style_remove_theme_builtin">Your changes to it go; Kali\'s version stays.</string>
     <string name="style_remove_deleted">It\'s deleted from the phone and from Linux.</string>
-    <string name="style_themes_downloading">Omarchy\'s other themes are downloading from github.com/omacom/omarchy (~70 MB).</string>
-    <string name="style_themes_not_installed">Omarchy\'s themes aren\'t installed yet. They\'re downloaded from github.com/omacom/omarchy (~70 MB).</string>
+    <string name="style_themes_downloading">Kali\'s other themes are downloading from the theme repository on GitHub (~70 MB).</string>
+    <string name="style_themes_not_installed">Kali\'s themes aren\'t installed yet. They\'re downloaded from the theme repository on GitHub (~70 MB).</string>
     <string name="style_downloading">downloading… %1$d MB</string>
     <!-- %1$s is the error. -->
     <string name="style_failed">failed: %1$s</string>
@@ -163,7 +163,7 @@
 
     <!-- Settings › coding agents (ui/AgentsScreen.kt). -->
     <string name="agents_title">coding agents</string>
-    <string name="agents_intro">Installed with mise, like Omarchy. Logins open in your browser; paste keys with the keyboard\'s clipboard.</string>
+    <string name="agents_intro">Installed with mise, like Kali. Logins open in your browser; paste keys with the keyboard\'s clipboard.</string>
     <string name="agents_open">open</string>
     <string name="agents_remove">remove</string>
     <string name="agents_install">install</string>

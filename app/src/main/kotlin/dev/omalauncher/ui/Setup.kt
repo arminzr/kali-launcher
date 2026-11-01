@@ -62,14 +62,14 @@ import kotlinx.coroutines.launch
 
 /**
  * The first-run screen: pick a theme and, optionally, set up Linux. Start
- * fetches Omarchy's themes, then the home screen opens; a Linux install
+ * fetches Kali's themes, then the home screen opens; a Linux install
  * carries on in the background.
  */
 @Composable
 internal fun SetupScreen(runtime: Runtime) {
     val themes = runtime.themes
     var linux by rememberSaveable { mutableStateOf(false) }
-    // Claude Code first, like Omarchy's default agent; the first picked becomes the launcher's default.
+    // Claude Code first, like Kali's default agent; the first picked becomes the launcher's default.
     var picked by rememberSaveable { mutableStateOf(listOf(AGENTS.first().bin)) }
     var started by remember { mutableStateOf(false) }
     val install = rememberLinuxInstall(runtime)
@@ -450,7 +450,7 @@ private fun LogTail(
 }
 
 /**
- * Omarchy's themes as swatches in a horizontal row; tapping one recolors everything right away.
+ * Kali's themes as swatches in a horizontal row; tapping one recolors everything right away.
  * [gutter] is the parent's side padding, which the row scrolls under. By default a pick only
  * recolors, for setup where the full themes aren't downloaded yet. With [onBrowse], the row
  * ends in a tile that opens the community themes.

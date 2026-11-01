@@ -181,7 +181,7 @@ internal object GpuDrivers {
         label = "Adreno",
         // The .so needs libSPIRV-Tools.so and libxcb-keysyms.so.1, which mesa does not always pull in.
         packages = basePackages + listOf("spirv-tools", "libxcb-keysyms1"),
-        // lfdevs turnip-26.3.0-devel-20260824, the Arch aarch64 vulkan-freedreno package (KGSL, glibc).
+        // lfdevs turnip-26.3.0-devel-20260824, the upstream aarch64 vulkan-freedreno package (KGSL, glibc).
         url = "https://github.com/lfdevs/mesa-for-android-container/releases/download/turnip-26.3.0-devel-20260824/vulkan-freedreno-1-26.3.0-1-aarch64.pkg.tar.xz",
         payload = DriverPayload.ArchPackage(
             packageSha256 = "9824514d7180402d936f83f4ad422f338b7df31ff2804eab8a0badb13ee44a77",

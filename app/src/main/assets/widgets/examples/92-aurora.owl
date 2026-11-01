@@ -26,6 +26,6 @@ widget "aurora" {
         }
       """
     }
-    Text { text: "omarchy"; style: huge; color: foreground; align: center }
+    Text { text: "kali"; style: huge; color: foreground; align: center }
   }
 }

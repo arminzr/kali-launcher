@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="linux_stage_download">下载 arch linux</string>
+    <string name="linux_stage_download">下载 kali linux</string>
     <string name="linux_stage_extract">解压系统</string>
     <string name="linux_stage_configure">配置 pacman</string>
-    <string name="linux_stage_packages">安装 omarchy 的应用</string>
+    <string name="linux_stage_packages">安装 kali 的应用</string>
     <string name="linux_stage_agents">安装编程智能体</string>
     <string name="linux_stage_agents_named">安装 %1$s</string>
 
-    <string name="linux_step_download">下载 Arch Linux ARM</string>
+    <string name="linux_step_download">下载 Kali Linux</string>
     <string name="linux_step_configure">配置系统</string>
     <string name="linux_step_forks">检查程序能否启动</string>
     <string name="linux_step_keyring">初始化 pacman 密钥环</string>
@@ -63,14 +63,14 @@
     <string name="linux_agent_muse">Meta 的编程智能体</string>
     <string name="linux_agent_kimi">月之暗面的编程智能体</string>
 
-    <string name="linux_welcome_title">把 omarchy 放上主屏幕</string>
-    <string name="linux_welcome_body">Omarchy 的主题和壁纸、你的 Android 应用，以及主屏幕小组件。Arch Linux 再带来终端应用和编程智能体，现在装或以后在设置里装都行。</string>
+    <string name="linux_welcome_title">把 kali 放上主屏幕</string>
+    <string name="linux_welcome_body">Kali 的主题和壁纸、你的 Android 应用，以及主屏幕小组件。Kali Linux 再带来终端应用和编程智能体，现在装或以后在设置里装都行。</string>
     <string name="linux_welcome_linux">linux</string>
-    <string name="linux_welcome_choice">同时安装 Arch Linux</string>
+    <string name="linux_welcome_choice">同时安装 Kali Linux</string>
     <string name="linux_welcome_choice_detail">终端应用、智能体、pacman · 下载约 1 GB，占用 3 GB</string>
     <string name="linux_welcome_start">开始</string>
     <string name="linux_welcome_start_linux">开始并安装 linux</string>
-    <string name="linux_welcome_start_hint">现在下载这个主题的壁纸，并在后台下载 Omarchy 的其他主题（约 70 MB）。</string>
+    <string name="linux_welcome_start_hint">现在下载这个主题的壁纸，并在后台下载 Kali 的其他主题（约 70 MB）。</string>
     <string name="linux_welcome_start_linux_hint">Linux 要下载约 1 GB（最好连 Wi-Fi），占用 3 GB 空间。它会在后台安装，大约 10 到 20 分钟；主屏幕马上就能用。</string>
     <string name="linux_welcome_getting">正在获取 %1$s</string>
     <string name="linux_welcome_theme_failed">主题没有下载成功</string>
@@ -94,13 +94,13 @@
 
     <string name="linux_title">linux</string>
     <string name="linux_removing">正在移除 linux…</string>
-    <string name="linux_offer_title">arch linux（可选）</string>
+    <string name="linux_offer_title">kali linux（可选）</string>
     <string name="linux_offer_body">Linux 应用、终端小组件、编程智能体、pacman 和文件。下载约 1 GB，占用 3 GB 空间；在后台安装。</string>
     <string name="linux_install">安装 linux</string>
     <plurals name="linux_install_with_agents">
         <item quantity="other">安装 linux 和 %d 个智能体</item>
     </plurals>
-    <string name="linux_arch">arch linux</string>
+    <string name="linux_arch">kali linux</string>
     <string name="linux_installed_size">已安装 · %1$s</string>
     <string name="linux_measuring">正在计算…</string>
     <string name="linux_remove">移除 linux</string>
@@ -127,7 +127,7 @@
 
     <string name="packages_title">软件包</string>
     <string name="packages_search">搜索软件包</string>
-    <string name="packages_intro">通过 pacman 安装 Arch Linux ARM 软件包，通过 yay 安装 AUR 软件包。安装时也会更新系统，所以可能要等一会儿。AUR 软件包由用户提交，并在设备上构建：请先在 aur.archlinux.org 上查看它的 PKGBUILD。</string>
+    <string name="packages_intro">通过 apt 安装 Kali Linux 软件包。安装时也会更新系统，所以可能要等一会儿。</string>
     <string name="packages_loading">正在加载…</string>
     <string name="packages_searching">正在搜索…</string>
     <string name="packages_installed">已安装（%1$d）</string>
@@ -160,4 +160,49 @@
     <string name="licenses_use_androidsvg">绘制 SVG 图标</string>
     <string name="licenses_use_zxing">绘制分享小组件用的二维码</string>
     <string name="licenses_use_json">读写 JSON</string>
+
+    <!-- Kali tool collections and root mode -->
+    <string name="linux_tools_title">Kali 工具</string>
+    <string name="linux_tools_subtitle">安装 Kali 的工具集</string>
+    <string name="linux_tools_intro">挑选 Kali 的工具集；运行前会先估算下载量和磁盘占用。</string>
+    <string name="linux_tools_select_all">全选</string>
+    <string name="linux_tools_clear">清除</string>
+    <string name="linux_tools_install">安装</string>
+    <string name="linux_tools_estimating">估算中…</string>
+    <string name="linux_tools_estimate">≈ 下载 %1$s · 占用 %2$s</string>
+    <string name="linux_tools_installing">正在安装 Kali 工具</string>
+    <string name="linux_root_mode">root 模式（实验性）</string>
+    <string name="linux_root_mode_subtitle">通过手机的 su 运行 linux 命令</string>
+    <string name="linux_root_no_su">此手机上未找到 su 可执行文件</string>
+    <string name="linux_tools_top10">十大工具</string>
+    <string name="linux_tools_information_gathering">信息收集</string>
+    <string name="linux_tools_vulnerability">漏洞分析</string>
+    <string name="linux_tools_web">Web 应用</string>
+    <string name="linux_tools_database">数据库</string>
+    <string name="linux_tools_passwords">密码</string>
+    <string name="linux_tools_exploitation">漏洞利用</string>
+    <string name="linux_tools_post_exploitation">后渗透</string>
+    <string name="linux_tools_sniffing_spoofing">嗅探与欺骗</string>
+    <string name="linux_tools_social_engineering">社会工程</string>
+    <string name="linux_tools_wireless">无线</string>
+    <string name="linux_tools_802_11">802.11 无线</string>
+    <string name="linux_tools_bluetooth">蓝牙</string>
+    <string name="linux_tools_hardware">硬件</string>
+    <string name="linux_tools_crypto_stego">加密与隐写</string>
+    <string name="linux_tools_forensics">取证</string>
+    <string name="linux_tools_reverse_engineering">逆向工程</string>
+    <string name="linux_tools_fuzzing">模糊测试</string>
+    <string name="linux_tools_gpu">GPU 工具</string>
+    <string name="linux_tools_identify">识别</string>
+    <string name="linux_tools_detect">检测</string>
+    <string name="linux_tools_protect">防护</string>
+    <string name="linux_tools_reporting">报告</string>
+    <string name="linux_tools_voip">VoIP</string>
+    <string name="linux_tools_rfid">RFID</string>
+    <string name="linux_tools_sdr">SDR</string>
+    <string name="linux_tools_recover">恢复</string>
+    <string name="linux_tools_respond">响应</string>
+    <string name="linux_tools_windows_resources">Windows 资源</string>
+    <string name="linux_tools_default">Kali Linux 默认</string>
+    <string name="linux_tools_large">Kali Linux 大全</string>
 </resources>

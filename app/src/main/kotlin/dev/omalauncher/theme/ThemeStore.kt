@@ -82,9 +82,9 @@ sealed interface ThemeDownload {
 }
 
 /**
- * Omarchy themes, in the launcher's own data (see [LauncherData]); the guest
- * sees them where Omarchy keeps them (~/.local/share/omarchy/themes), and the
- * user's own in ~/.config/omarchy/themes (see [ThemeDirs]).
+ * Kali themes, in the launcher's own data (see [LauncherData]); the guest
+ * sees them where Kali keeps them (~/.local/share/kalilauncher/themes), and the
+ * user's own in ~/.config/kalilauncher/themes (see [ThemeDirs]).
  * Applying a theme recolors the launcher and swaps the wallpaper and, when
  * Linux is installed, writes the guest's themed configs.
  */
@@ -114,7 +114,7 @@ class ThemeStore(
     var download by mutableStateOf<ThemeDownload>(ThemeDownload.Idle)
         private set
 
-    /** Every Omarchy theme's colors, from the app's assets (see scripts/fetch-theme-colors.sh). Read off the main thread. */
+    /** Every Kali theme's colors, from the app's assets (see scripts/fetch-theme-colors.sh). Read off the main thread. */
     val bundled: List<BundledTheme> by lazy {
         context.assets.list("themes").orEmpty().sorted().map { file ->
             val text = context.assets.open("themes/$file").bufferedReader().use { it.readText() }
@@ -194,7 +194,7 @@ class ThemeStore(
         Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER)
             .putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, ComponentName(context, OmarchyWallpaperService::class.java))
 
-    /** Whether the Omarchy files on disk are the release this app pins. */
+    /** Whether the Kali files on disk are the release this app pins. */
     fun hasCurrentRelease() = release.isCurrent()
 
     /** Whether [load] has finished; until then it may still replace the wallpaper. */
@@ -298,7 +298,7 @@ class ThemeStore(
     }
 
     /**
-     * Downloads the pinned Omarchy release if it's missing or outdated (an
+     * Downloads the pinned Kali release if it's missing or outdated (an
      * app update can move [OMARCHY_REF]), then applies the picked theme, or
      * reloads the current one from the new files. Returns whether the themes are current.
      */
@@ -312,7 +312,7 @@ class ThemeStore(
             true
         }
 
-    /** Fetches the pinned Omarchy release; see [OmarchyRelease]. Returns whether it worked. */
+    /** Fetches the pinned Kali release; see [OmarchyRelease]. Returns whether it worked. */
     private suspend fun downloadThemes(): Boolean =
         withContext(Dispatchers.IO) {
             download = ThemeDownload.Running(0)
@@ -482,7 +482,7 @@ class ThemeStore(
         val name = picked
         val bundledTheme = bundled.firstOrNull { it.name == name }
         if (bundledTheme == null || complete) {
-            style.report("theme: no theme named \"$name\" in ~/.local/share/omarchy/themes or ~/.config/omarchy/themes")
+            style.report("theme: no theme named \"$name\" in ~/.local/share/kalilauncher/themes or ~/.config/kalilauncher/themes")
             return
         }
         Palette.apply(bundledTheme.colors)
@@ -491,7 +491,7 @@ class ThemeStore(
 
     /**
      * Like omarchy-theme-bg-install, then picking it: copies an image into the
-     * current theme's ~/.config/omarchy/backgrounds/<theme> and shows it.
+     * current theme's ~/.config/kalilauncher/backgrounds/<theme> and shows it.
      * Formats Linux can't read (HEIC, GIF) are re-encoded as JPEG.
      */
     suspend fun addBackground(uri: Uri) {
@@ -525,7 +525,7 @@ class ThemeStore(
 
     /**
      * Deletes one of the user's extra backgrounds, from the phone and Linux.
-     * If it was showing, the theme's first takes its place, as on Omarchy
+     * If it was showing, the theme's first takes its place, as on Kali
      * when the picked background is gone.
      */
     suspend fun removeBackground(file: File) {
@@ -538,7 +538,7 @@ class ThemeStore(
     }
 
     /**
-     * Guest configs for Omarchy's apps, in the current theme's colors. Before
+     * Guest configs for Kali's apps, in the current theme's colors. Before
      * [load] ran, the saved theme's: leaving them out would count as removing them.
      */
     fun managed() = guest.managed(current ?: savedTheme())
@@ -546,7 +546,7 @@ class ThemeStore(
     private fun savedTheme(): OmarchyTheme? = runCatching { dirs.load(picked) }.getOrNull()
 
     companion object {
-        /** The Omarchy commit themes and configs come from. Changing it updates them on every install. */
+        /** The Kali commit themes and configs come from. Changing it updates them on every install. */
         const val OMARCHY_REF = "8b4eae66da2938ba9559f103b18dbf85cdf28a70"
 
         private const val RENDERED_BY = "rendered_by"

@@ -9,12 +9,17 @@ import androidx.annotation.StringRes
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -24,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.runtime.setValue
@@ -37,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import dev.omalauncher.AppLanguage
 import dev.omalauncher.LocalNetwork
+import dev.omalauncher.LauncherData
 import dev.omalauncher.R
 import dev.omalauncher.Runtime
 import dev.omalauncher.linux.JobState
@@ -46,6 +53,7 @@ import dev.omalauncher.widgets.WidgetEngine
 import dev.omalauncher.widgets.market.CatalogEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 /** The launcher's settings hub, opened from the gear next to the drawer's search. */
 @Composable
@@ -78,6 +86,8 @@ fun SettingsScreen(
     val roles = remember { context.getSystemService(RoleManager::class.java) }
     val homeRoleMissing = { roles.isRoleAvailable(RoleManager.ROLE_HOME) && !roles.isRoleHeld(RoleManager.ROLE_HOME) }
     var notHome by remember { mutableStateOf(homeRoleMissing()) }
+    // Opened over the hub rather than pushed as a page: the tools screen lives with the packages one.
+    var showTools by remember { mutableStateOf(false) }
     // Made the default (or not) in Android's settings while away.
     LifecycleResumeEffect(Unit) {
         notHome = homeRoleMissing()
@@ -122,6 +132,7 @@ fun SettingsScreen(
                     SettingsRow(R.string.settings_agents, needsLinux, onLinux)
                 },
                 SettingsRow(R.string.settings_packages, if (installed) stringResource(R.string.settings_packages_subtitle) else needsLinux, if (installed) onPackages else onLinux),
+                SettingsRow(R.string.linux_tools_title, if (installed) stringResource(R.string.linux_tools_subtitle) else needsLinux, if (installed) ({ showTools = true }) else onLinux),
                 if (notHome) {
                     SettingsRow(R.string.settings_home_app, stringResource(R.string.settings_home_app_subtitle)) {
                         askHome.launch(roles.createRequestRoleIntent(RoleManager.ROLE_HOME))
@@ -146,9 +157,12 @@ fun SettingsScreen(
         Column(Modifier.verticalScroll(rememberScrollState())) {
             UpdatesBox(runtime, installed)
             if (installed) SetupUpdates(runtime)
+            if (installed) RootModeRow(runtime)
             SettingsRows(rows)
         }
     }
+    // Over the hub, like a pushed page; the hub stays drawn underneath until this closes.
+    if (showTools) ToolsScreen(runtime, onDismiss = { showTools = false })
 }
 
 /**
@@ -354,6 +368,74 @@ private fun UpdateLines(
 
 /** Lines a section of the updates box lists before it says how many more there are. */
 private const val MAX_LINES = 10
+
+/** Where the root mode choice lives between runs; Proot loads it on start. */
+private const val ROOT_MODE = "root_mode"
+
+/** Where a rooted phone keeps su, minus the paths this app could never read. */
+private val SU_PATHS = listOf("/system/bin/su", "/system/xbin/su", "/system/sd/bin/su", "/sbin/su")
+
+/**
+ * Run the guest's commands through the phone's su, for tools that want a real root
+ * (raw sockets, /dev access). Off unless the phone really has a su to hand them to.
+ */
+@Composable
+private fun RootModeRow(runtime: Runtime) {
+    val context = LocalContext.current
+    val prefs = remember { LauncherData.prefs(context) }
+    var enabled by remember { mutableStateOf(prefs.getBoolean(ROOT_MODE, false)) }
+    var missingSu by remember { mutableStateOf(false) }
+    Column(
+        Modifier.padding(bottom = 8.dp).card(),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                BasicText(stringResource(R.string.linux_root_mode), style = Mono.copy(fontSize = TextSize.Item))
+                BasicText(stringResource(R.string.linux_root_mode_subtitle), style = Mono.copy(color = Palette.muted, fontSize = TextSize.Small))
+            }
+            ToggleSwitch(enabled) { on ->
+                if (on && SU_PATHS.none { File(it).isFile }) {
+                    // No su anywhere: stay off and say why, rather than break every guest command.
+                    missingSu = true
+                    return@ToggleSwitch
+                }
+                prefs.edit().putBoolean(ROOT_MODE, on).apply()
+                runtime.proot.rootMode = on
+                enabled = on
+                missingSu = false
+            }
+        }
+        if (missingSu) {
+            BasicText(stringResource(R.string.linux_root_no_su), style = Mono.copy(color = Palette.red, fontSize = TextSize.Small))
+        }
+    }
+}
+
+/** A small track-and-thumb switch in the launcher's style; the app pulls in no Material library. */
+@Composable
+private fun ToggleSwitch(
+    on: Boolean,
+    onChange: (Boolean) -> Unit,
+) {
+    val shape = RoundedCornerShape(50)
+    Box(
+        Modifier
+            .size(width = 46.dp, height = 26.dp)
+            .clip(shape)
+            .background(if (on) Palette.accent else Palette.surface)
+            .border(2.dp, if (on) Palette.accent else Palette.muted, shape)
+            .clickable { onChange(!on) },
+        contentAlignment = if (on) Alignment.CenterEnd else Alignment.CenterStart,
+    ) {
+        Box(
+            Modifier
+                .padding(3.dp)
+                .size(16.dp)
+                .clip(CircleShape)
+                .background(if (on) Palette.background else Palette.muted),
+        )
+    }
+}
 
 @Composable
 private fun ago(millis: Long): String {

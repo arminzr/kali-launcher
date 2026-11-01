@@ -148,7 +148,7 @@ class MainActivity : ComponentActivity() {
                     getSystemService(ActivityManager::class.java).appTasks.mapNotNull { task ->
                         val data = runCatching { task.taskInfo?.baseIntent?.data }.getOrNull() ?: return@mapNotNull null
                         // By its data rather than its class: windows start through aliases too.
-                        if (data.scheme == "omarchy" && data.host == "window") task to data.lastPathSegment else null
+                        if (data.scheme == "kali" && data.host == "window") task to data.lastPathSegment else null
                     }
                 }
             val stale = windows.filter { (_, handle) -> runtime.wm.windowByHandle(handle) == null }.map { it.first }
@@ -227,7 +227,7 @@ class MainActivity : ComponentActivity() {
         when (keyCode) {
             // Lets go of the terminal tile that has the keys, as Back or a tap outside does, where Esc itself is its own.
             KeyEvent.KEYCODE_ESCAPE -> if (runtime.terminals.active != null) runtime.terminals.deactivate() else return false
-            // Super+D and Super+T, as Android keeps Omarchy's Super+Space (the Assistant on a Pixel) and Super+Enter (Home)
+            // Super+D and Super+T, as Android keeps Kali's Super+Space (the Assistant on a Pixel) and Super+Enter (Home)
             // for itself; those stay for phones that pass them on.
             KeyEvent.KEYCODE_D, KeyEvent.KEYCODE_SPACE -> state.toggle()
             KeyEvent.KEYCODE_T, KeyEvent.KEYCODE_ENTER -> runtime.terminal(null, "Terminal")

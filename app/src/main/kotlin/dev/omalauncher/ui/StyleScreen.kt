@@ -101,7 +101,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Omarchy's Style menu: the theme, its background, how the home screen
+ * Kali's Style menu: the theme, its background, how the home screen
  * draws itself and, with Linux, the terminal's text size.
  */
 @Composable
@@ -285,7 +285,7 @@ private enum class KeybarAction(@StringRes val label: Int) {
     Stock(R.string.style_keybar_back_to_stock),
 }
 
-/** The installed themes in a row, starting at the current one; browse has Omarchy's whole catalog. */
+/** The installed themes in a row, starting at the current one; browse has Kali's whole catalog. */
 @Composable
 private fun ThemeSection(
     store: ThemeStore,
@@ -361,7 +361,7 @@ private fun BackgroundSection(
                 onLongClick = if (theme.isExtraBackground(file)) ({ removing = file }) else null,
             )
         }
-        // Omarchy's Install > Style > Background, with Android's image picker instead of a folder.
+        // Kali's Install > Style > Background, with Android's image picker instead of a folder.
         item(key = "add") {
             Box(
                 Modifier

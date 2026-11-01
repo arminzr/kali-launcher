@@ -37,15 +37,32 @@ class Proot(
     /** How guest apps render OpenGL and Vulkan: in software, or on the GPU once [Gpu] turns it on. */
     @Volatile var graphicsEnv: List<String> = SOFTWARE_ENV
 
+    /**
+     * Root mode (rooted phones): guest commands run through the phone's su, so proot and everything
+     * inside the guest run as real uid 0 — real /dev nodes, no shell-permission ceilings. It does NOT
+     * lift kernel limits: Wi-Fi monitor mode, packet injection and netfilter stay out of reach on a
+     * stock kernel, with or without root. Set from Settings (root_mode pref); [supportsRootMode]
+     * gates the toggle's enable state.
+     */
+    @Volatile var rootMode = false
+
+    /** The phone's su binary, if any; su takes `su 0 <argv…>` and runs it as root, no quoting involved. */
+    val suBinary by lazy {
+        listOf("/system/bin/su", "/system/xbin/su", "/sbin/su", "/system/sd/bin/su", "/su/bin/su", "/magisk/.core/bin/su")
+            .map(::File).firstOrNull { it.exists() }
+    }
+
+    fun supportsRootMode() = suBinary != null
+
     /** Launcher data the guest sees in its home, kept outside the rootfs; see [LauncherData]. */
     private val dataBinds =
         listOf(
-            "$GUEST_HOME/.local/share/omarchy" to LauncherData.omarchyDir(context),
+            "$GUEST_HOME/.local/share/kalilauncher" to LauncherData.omarchyDir(context),
             "$GUEST_HOME/.config/omalauncher/widgets" to LauncherData.widgetsDir(context),
             "$GUEST_HOME/.config/omalauncher/style" to LauncherData.styleDir(context),
             "$GUEST_HOME/.config/omalauncher/home" to LauncherData.homeDir(context),
-            "$GUEST_HOME/.config/omarchy/themes" to LauncherData.userThemesDir(context),
-            "$GUEST_HOME/.config/omarchy/backgrounds" to LauncherData.userBackgroundsDir(context),
+            "$GUEST_HOME/.config/kalilauncher/themes" to LauncherData.userThemesDir(context),
+            "$GUEST_HOME/.config/kalilauncher/backgrounds" to LauncherData.userBackgroundsDir(context),
         )
 
     /**
@@ -99,6 +116,7 @@ class Proot(
      * guest runs.
      */
     fun prepare() {
+        rootMode = LauncherData.prefs(context).getBoolean("root_mode", false) && supportsRootMode()
         for (dir in listOf(tmpDir, runtimeDir)) {
             LauncherData.deleteTree(dir)
             dir.mkdirs()
@@ -139,7 +157,8 @@ class Proot(
     fun managed(): List<Managed> =
         listOf(Managed.asset(context, "bwrap-shim.sh", File(rootfs, "usr/local/bin/bwrap"), Policy.Owned, executable = true))
 
-    private fun command(script: String): List<String> =
+    private fun command(script: String): List<String> {
+        val argv =
         listOf(
             File(nativeDir, "libproot.so").path,
             "--kill-on-exit",
@@ -190,6 +209,10 @@ class Proot(
                 "MOZ_ENABLE_WAYLAND=1",
                 "SDL_VIDEODRIVER=wayland",
             ) + graphicsEnv + listOf("/bin/sh", "-c", script)
+
+        // Root mode: run the whole proot invocation as real root through the phone's su.
+        return if (rootMode && supportsRootMode()) listOf("su", "0") + argv else argv
+    }
 
     /**
      * Kills every proot we started and every guest process: before the rootfs

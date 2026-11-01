@@ -74,10 +74,10 @@
     <string name="style_update">actualizar</string>
     <string name="style_remove">quitar</string>
     <string name="style_remove_theme_title">¿quitar %1$s?</string>
-    <string name="style_remove_theme_builtin">Tus cambios se pierden; la versión de Omarchy se queda.</string>
+    <string name="style_remove_theme_builtin">Tus cambios se pierden; la versión de Kali se queda.</string>
     <string name="style_remove_deleted">Se borra del teléfono y de Linux.</string>
-    <string name="style_themes_downloading">Los demás temas de Omarchy se están descargando de github.com/omacom/omarchy (~70 MB).</string>
-    <string name="style_themes_not_installed">Los temas de Omarchy aún no están instalados. Se descargan de github.com/omacom/omarchy (~70 MB).</string>
+    <string name="style_themes_downloading">Los demás temas de Kali se están descargando de the theme repository on GitHub (~70 MB).</string>
+    <string name="style_themes_not_installed">Los temas de Kali aún no están instalados. Se descargan de the theme repository on GitHub (~70 MB).</string>
     <string name="style_downloading">descargando… %1$d MB</string>
     <string name="style_failed">falló: %1$s</string>
     <string name="style_retry">reintentar</string>
@@ -130,7 +130,7 @@
     <string name="gestures_keybar_until_fixed">la barra de teclas de la terminal es la original hasta que se arregle: %1$s</string>
 
     <string name="agents_title">agentes de programación</string>
-    <string name="agents_intro">Se instalan con mise, como en Omarchy. Los inicios de sesión se abren en tu navegador; pega las claves con el portapapeles del teclado.</string>
+    <string name="agents_intro">Se instalan con mise, como en Kali. Los inicios de sesión se abren en tu navegador; pega las claves con el portapapeles del teclado.</string>
     <string name="agents_open">abrir</string>
     <string name="agents_remove">desinstalar</string>
     <string name="agents_install">instalar</string>

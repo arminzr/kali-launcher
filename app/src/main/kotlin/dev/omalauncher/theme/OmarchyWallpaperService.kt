@@ -15,7 +15,7 @@ import dev.omalauncher.ui.wallpaperCrop
 import java.util.concurrent.Executors
 
 /**
- * Android live wallpaper showing the current Omarchy background. Its main
+ * Android live wallpaper showing the current Kali background. Its main
  * purpose is [Engine.onComputeColors]: Android 12+ derives the system color
  * scheme (quick settings, notifications, Settings, keyboard, dynamic-color
  * apps) from the colors the wallpaper reports, so we report the theme's

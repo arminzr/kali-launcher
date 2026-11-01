@@ -134,7 +134,7 @@ internal fun TileLabel(text: String) {
     )
 }
 
-/** An app's badge: a circle when rounded, a square with Omarchy's sharp edges, [fill]ed, with [content] centered. */
+/** An app's badge: a circle when rounded, a square with Kali's sharp edges, [fill]ed, with [content] centered. */
 @Composable
 internal fun IconBadge(
     size: Dp,

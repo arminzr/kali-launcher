@@ -61,7 +61,7 @@ private fun Throwable.outOfSpace() =
 private fun gigabytes(bytes: Long) = "%.1f GB".format(bytes / 1e9)
 
 /**
- * Omarchy's classic terminal apps, from kali-rolling. The Nerd Font glyphs come from the
+ * Kali's classic terminal apps, from kali-rolling. The Nerd Font glyphs come from the
  * symbols-only font: the full JetBrainsMono Nerd family is ~200 MB.
  * Changing this list needs a new id for the packages step.
  */
@@ -72,7 +72,7 @@ private val PACKAGES =
         "man-db", "less", "dua-cli", "inxi", "whois", "git", "bash-completion", "pulseaudio", "micro", "python3-pip",
     )
 
-/** Omarchy's Winamp-style player; not in Arch's ARM repos, but upstream ships an arm64 build. */
+/** Kali's Winamp-style player; not in Kali's repos, but upstream ships an arm64 build. */
 private const val CLIAMP_VERSION = "v2.3.0"
 private const val CLIAMP_URL = "https://github.com/bjarneo/cliamp/releases/download/$CLIAMP_VERSION/cliamp-linux-arm64"
 private const val CLIAMP_SHA256 = "827b4aa879feecab33ea621dc1460c60ffa765c210b5046d679ce5a4073d2b32"
@@ -199,7 +199,7 @@ class Bootstrap(
             Step("packages-kali-1", Stage.Packages, R.string.linux_step_packages, network = true) { guest(aptInstall(PACKAGES, refresh = true)) },
             Step("keymap-1", Stage.Packages, R.string.linux_step_keymap, network = false, isDone = { proot.keymap.exists() }) { compileKeymap() },
             Step("cliamp-$CLIAMP_VERSION", Stage.Packages, R.string.linux_step_cliamp, network = true) { installCliamp() },
-            // Omarchy's themes were a step here ("omarchy-<ref>") until Linux became optional; ThemeStore fetches them now.
+            // Kali's themes were a step here ("kali-<ref>") until Linux became optional; ThemeStore fetches them now.
         )
 
     private fun Step.done() = isDone?.invoke() ?: (id in journal)

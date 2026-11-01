@@ -3,7 +3,7 @@ package dev.omalauncher.theme
 import java.io.File
 
 /**
- * Parses an Omarchy `colors.toml` and resolves the derived names that
+ * Parses an Kali `colors.toml` and resolves the derived names that
  * templates use, mirroring the cascade in omarchy-theme-color.
  */
 object ThemeColors {

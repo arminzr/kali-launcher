@@ -76,13 +76,13 @@
     <string name="store_added_panel">✓ 已在手势设置中</string>
     <string name="store_added_keybar">✓ 已在你的小组件文件夹中</string>
 
-    <string name="store_needs_linux_app">需要 Linux：它在 Arch 中运行命令，所以在设置里安装 Linux 后才会出现在应用抽屉中</string>
-    <string name="store_needs_linux_widget">需要 Linux：它在 Arch 中运行命令，所以在设置里安装 Linux 之前它只是一个占位符</string>
+    <string name="store_needs_linux_app">需要 Linux：它在 Kali 中运行命令，所以在设置里安装 Linux 后才会出现在应用抽屉中</string>
+    <string name="store_needs_linux_widget">需要 Linux：它在 Kali 中运行命令，所以在设置里安装 Linux 之前它只是一个占位符</string>
 
     <string name="store_installs_packages">安装软件包：%1$s</string>
     <string name="store_packages_none">无</string>
     <string name="store_runs_no_commands">不运行任何命令</string>
-    <string name="store_runs_commands">在 Arch 中运行这些命令：</string>
+    <string name="store_runs_commands">在 Kali 中运行这些命令：</string>
 
     <string name="store_installing">正在安装…</string>
     <string name="store_updating">正在更新…</string>
@@ -98,7 +98,7 @@
     <string name="store_shared_unnamed_app">一个应用</string>
     <string name="store_shared_unnamed_widget">一个小组件</string>
     <string name="store_shared_info">分享给你%1$s · %2$.1f KB</string>
-    <string name="store_shared_warning">只有信任发送者时才添加它。它会以你的身份在 Arch 中运行下面的命令，可以访问你的文件和网络。</string>
+    <string name="store_shared_warning">只有信任发送者时才添加它。它会以你的身份在 Kali 中运行下面的命令，可以访问你的文件和网络。</string>
     <string name="store_shared_needs_newer">需要新版启动器（owl %1$d）；更新启动器后即可添加</string>
     <string name="store_shared_replace">替换之前分享的 %1$s</string>
     <string name="store_add_to_drawer">添加到应用抽屉</string>
@@ -144,14 +144,14 @@
 
     <string name="store_theme_title">社区主题</string>
     <string name="store_theme_search">搜索 %1$d 个主题</string>
-    <string name="store_theme_header">由社区制作，列于 omarchy.org/themes · 从 GitHub 安装</string>
+    <string name="store_theme_header">由社区制作，从 GitHub 安装</string>
     <string name="store_theme_in_use">✓ 使用中</string>
     <string name="store_theme_install_confirm">安装 %1$s？</string>
     <string name="store_theme_install_message">来自 %1$s。Linux 会获得它的颜色和壁纸，但不包括它的脚本和终端配置。</string>
     <string name="store_theme_install_message_replaces">来自 %1$s。Linux 会获得它的颜色和壁纸，但不包括它的脚本和终端配置。\n\n它会替换你的 %2$s。</string>
-    <string name="store_theme_install_message_over">来自 %1$s。Linux 会获得它的颜色和壁纸，但不包括它的脚本和终端配置。\n\n它会覆盖 Omarchy 的 %2$s；移除它即可恢复原样。</string>
+    <string name="store_theme_install_message_over">来自 %1$s。Linux 会获得它的颜色和壁纸，但不包括它的脚本和终端配置。\n\n它会覆盖 Kali 的 %2$s；移除它即可恢复原样。</string>
     <string name="store_theme_installing">正在安装 %1$s… %2$d MB</string>
-    <string name="store_theme_catalog_failed">无法加载 omarchy.org/themes：%1$s</string>
+    <string name="store_theme_catalog_failed">无法加载主题列表：%1$s</string>
     <string name="store_theme_page_changed">页面已改变，无法读取</string>
     <string name="store_theme_not_github">不是 GitHub 仓库：%1$s</string>
     <string name="store_theme_not_on_github">%1$s 不在 GitHub 上</string>

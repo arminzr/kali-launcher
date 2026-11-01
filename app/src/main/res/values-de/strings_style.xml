@@ -74,10 +74,10 @@
     <string name="style_update">aktualisieren</string>
     <string name="style_remove">entfernen</string>
     <string name="style_remove_theme_title">%1$s entfernen?</string>
-    <string name="style_remove_theme_builtin">Deine Änderungen daran gehen verloren; Omarchys Version bleibt.</string>
+    <string name="style_remove_theme_builtin">Deine Änderungen daran gehen verloren; Kalis Version bleibt.</string>
     <string name="style_remove_deleted">Es wird vom Smartphone und aus Linux gelöscht.</string>
-    <string name="style_themes_downloading">Omarchys andere Themes laden gerade von github.com/omacom/omarchy (~70 MB).</string>
-    <string name="style_themes_not_installed">Omarchys Themes sind noch nicht da. Sie kommen von github.com/omacom/omarchy (~70 MB).</string>
+    <string name="style_themes_downloading">Kalis andere Themes laden gerade von the theme repository on GitHub (~70 MB).</string>
+    <string name="style_themes_not_installed">Kalis Themes sind noch nicht da. Sie kommen von the theme repository on GitHub (~70 MB).</string>
     <string name="style_downloading">lädt… %1$d MB</string>
     <string name="style_failed">hat nicht geklappt: %1$s</string>
     <string name="style_retry">nochmal versuchen</string>
@@ -128,7 +128,7 @@
     <string name="gestures_keybar_until_fixed">die terminal-tastenleiste ist die standardleiste, bis der fehler behoben ist: %1$s</string>
 
     <string name="agents_title">coding-agenten</string>
-    <string name="agents_intro">Installiert mit mise, wie bei Omarchy. Anmeldungen öffnen sich im Browser; füge Schlüssel über die Zwischenablage der Tastatur ein.</string>
+    <string name="agents_intro">Installiert mit mise, wie bei Kali. Anmeldungen öffnen sich im Browser; füge Schlüssel über die Zwischenablage der Tastatur ein.</string>
     <string name="agents_open">öffnen</string>
     <string name="agents_remove">deinstallieren</string>
     <string name="agents_install">installieren</string>

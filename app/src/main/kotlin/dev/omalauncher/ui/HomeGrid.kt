@@ -75,7 +75,7 @@ import androidx.compose.ui.unit.toOffset
 import kotlinx.coroutines.launch
 
 /**
- * Pixel geometry of the home grid: cells separated by Omarchy-style gaps, as many rows of
+ * Pixel geometry of the home grid: cells separated by Kali-style gaps, as many rows of
  * square-ish cells as fit, but never fewer than the [used] rows tiles were placed on. A layout
  * made on a tall screen keeps its arrangement on a squarer one (a foldable's inner screen) with
  * shorter cells, rather than tiles stacking. [turned] (landscape) lays portrait's grid on its

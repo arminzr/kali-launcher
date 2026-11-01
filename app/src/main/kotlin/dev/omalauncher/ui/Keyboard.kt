@@ -40,7 +40,7 @@ class KeyboardBridge(
     private val wm: WindowManager,
     private val images: GuestImages,
 ) {
-    /** Launcher shortcuts triggered with Meta (Super), like Omarchy's Super bindings. */
+    /** Launcher shortcuts triggered with Meta (Super), like Kali's Super bindings. */
     var onShortcut: (Int) -> Boolean = { false }
 
     val ctrl = StickyModifier(Keys.KEY_LEFTCTRL)

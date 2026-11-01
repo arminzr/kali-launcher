@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="linux_stage_download">baixar o arch linux</string>
+    <string name="linux_stage_download">baixar o kali linux</string>
     <string name="linux_stage_extract">descompactar o sistema</string>
     <string name="linux_stage_configure">configurar o pacman</string>
-    <string name="linux_stage_packages">instalar os apps do omarchy</string>
+    <string name="linux_stage_packages">instalar os apps do kali</string>
     <string name="linux_stage_agents">instalar agentes de programação</string>
     <string name="linux_stage_agents_named">instalar %1$s</string>
 
-    <string name="linux_step_download">Baixando o Arch Linux ARM</string>
+    <string name="linux_step_download">Baixando o Kali Linux</string>
     <string name="linux_step_configure">Configurando o sistema</string>
     <string name="linux_step_forks">Verificando se os programas conseguem iniciar</string>
     <string name="linux_step_keyring">Inicializando o chaveiro do pacman</string>
@@ -65,14 +65,14 @@
     <string name="linux_agent_muse">Agente de programação da Meta</string>
     <string name="linux_agent_kimi">Agente de programação da Moonshot AI</string>
 
-    <string name="linux_welcome_title">omarchy na sua tela inicial</string>
-    <string name="linux_welcome_body">Os temas e papéis de parede do Omarchy, seus apps Android e widgets na tela inicial. O Arch Linux traz apps de terminal e agentes de programação, agora ou depois nas configurações.</string>
+    <string name="linux_welcome_title">kali na sua tela inicial</string>
+    <string name="linux_welcome_body">Os temas e papéis de parede do Kali, seus apps Android e widgets na tela inicial. O Kali Linux traz apps de terminal e agentes de programação, agora ou depois nas configurações.</string>
     <string name="linux_welcome_linux">linux</string>
-    <string name="linux_welcome_choice">configurar também o Arch Linux</string>
+    <string name="linux_welcome_choice">configurar também o Kali Linux</string>
     <string name="linux_welcome_choice_detail">apps de terminal, agentes, pacman · download de ~1 GB, 3 GB de espaço</string>
     <string name="linux_welcome_start">começar</string>
     <string name="linux_welcome_start_linux">começar e configurar o linux</string>
-    <string name="linux_welcome_start_hint">Baixa agora o papel de parede do tema e os outros temas do Omarchy (cerca de 70 MB) em segundo plano.</string>
+    <string name="linux_welcome_start_hint">Baixa agora o papel de parede do tema e os outros temas do Kali (cerca de 70 MB) em segundo plano.</string>
     <string name="linux_welcome_start_linux_hint">O Linux baixa cerca de 1 GB, então é melhor usar Wi-Fi, e ocupa 3 GB de espaço. A instalação leva de 10 a 20 minutos em segundo plano; a tela inicial fica pronta na hora.</string>
     <string name="linux_welcome_getting">obtendo %1$s</string>
     <string name="linux_welcome_theme_failed">o tema não foi baixado</string>
@@ -96,7 +96,7 @@
 
     <string name="linux_title">linux</string>
     <string name="linux_removing">removendo o linux…</string>
-    <string name="linux_offer_title">arch linux, opcional</string>
+    <string name="linux_offer_title">kali linux, opcional</string>
     <string name="linux_offer_body">Apps Linux, widgets de terminal, agentes de programação, pacman e Arquivos. Cerca de 1 GB de download e 3 GB de espaço; instala em segundo plano.</string>
     <string name="linux_install">instalar linux</string>
     <plurals name="linux_install_with_agents">
@@ -104,7 +104,7 @@
         <item quantity="many">instalar linux e %d agentes</item>
         <item quantity="other">instalar linux e %d agentes</item>
     </plurals>
-    <string name="linux_arch">arch linux</string>
+    <string name="linux_arch">kali linux</string>
     <string name="linux_installed_size">instalado · %1$s</string>
     <string name="linux_measuring">medindo…</string>
     <string name="linux_remove">remover linux</string>
@@ -131,7 +131,7 @@
 
     <string name="packages_title">pacotes</string>
     <string name="packages_search">pesquisar pacotes</string>
-    <string name="packages_intro">Pacotes do Arch Linux ARM pelo pacman, e o AUR pelo yay. Instalar também atualiza o sistema, então pode demorar. Os pacotes do AUR são enviados por usuários e compilados no aparelho: confira o PKGBUILD deles em aur.archlinux.org antes.</string>
+    <string name="packages_intro">Pacotes do Kali Linux pelo apt. Instalar também atualiza o sistema, então pode demorar.</string>
     <string name="packages_loading">carregando…</string>
     <string name="packages_searching">pesquisando…</string>
     <string name="packages_installed">instalados (%1$d)</string>
@@ -166,4 +166,49 @@
     <string name="licenses_use_androidsvg">desenha ícones SVG</string>
     <string name="licenses_use_zxing">desenha os QR codes com que os widgets são compartilhados</string>
     <string name="licenses_use_json">lê e escreve JSON</string>
+
+    <!-- Kali tool collections and root mode -->
+    <string name="linux_tools_title">ferramentas do kali</string>
+    <string name="linux_tools_subtitle">Instala as coleções de ferramentas do Kali</string>
+    <string name="linux_tools_intro">Escolha as coleções de ferramentas do Kali; o download e o uso de disco são estimados antes de executar.</string>
+    <string name="linux_tools_select_all">selecionar tudo</string>
+    <string name="linux_tools_clear">limpar</string>
+    <string name="linux_tools_install">instalar</string>
+    <string name="linux_tools_estimating">estimando…</string>
+    <string name="linux_tools_estimate">≈ %1$s de download · %2$s no armazenamento</string>
+    <string name="linux_tools_installing">instalando ferramentas do kali</string>
+    <string name="linux_root_mode">modo root (experimental)</string>
+    <string name="linux_root_mode_subtitle">executar comandos linux pelo su do telefone</string>
+    <string name="linux_root_no_su">nenhum binário su encontrado neste telefone</string>
+    <string name="linux_tools_top10">ferramentas top 10</string>
+    <string name="linux_tools_information_gathering">coleta de informações</string>
+    <string name="linux_tools_vulnerability">análise de vulnerabilidades</string>
+    <string name="linux_tools_web">aplicações web</string>
+    <string name="linux_tools_database">bancos de dados</string>
+    <string name="linux_tools_passwords">senhas</string>
+    <string name="linux_tools_exploitation">exploração</string>
+    <string name="linux_tools_post_exploitation">pós-exploração</string>
+    <string name="linux_tools_sniffing_spoofing">sniffing e spoofing</string>
+    <string name="linux_tools_social_engineering">engenharia social</string>
+    <string name="linux_tools_wireless">sem fio</string>
+    <string name="linux_tools_802_11">sem fio 802.11</string>
+    <string name="linux_tools_bluetooth">bluetooth</string>
+    <string name="linux_tools_hardware">hardware</string>
+    <string name="linux_tools_crypto_stego">cripto e estego</string>
+    <string name="linux_tools_forensics">forense</string>
+    <string name="linux_tools_reverse_engineering">engenharia reversa</string>
+    <string name="linux_tools_fuzzing">fuzzing</string>
+    <string name="linux_tools_gpu">ferramentas de gpu</string>
+    <string name="linux_tools_identify">identificar</string>
+    <string name="linux_tools_detect">detectar</string>
+    <string name="linux_tools_protect">proteger</string>
+    <string name="linux_tools_reporting">relatórios</string>
+    <string name="linux_tools_voip">voip</string>
+    <string name="linux_tools_rfid">rfid</string>
+    <string name="linux_tools_sdr">sdr</string>
+    <string name="linux_tools_recover">recuperação</string>
+    <string name="linux_tools_respond">resposta</string>
+    <string name="linux_tools_windows_resources">recursos do windows</string>
+    <string name="linux_tools_default">kali linux default</string>
+    <string name="linux_tools_large">kali linux large</string>
 </resources>

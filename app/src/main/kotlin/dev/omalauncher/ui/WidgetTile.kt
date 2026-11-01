@@ -243,7 +243,7 @@ private fun ScreenInset(
     SideEffect { instance.setScreenInset(dp) }
 }
 
-/** A widget's screen { }, full screen over home in an Omarchy window titled by its `title` or the widget's name. */
+/** A widget's screen { }, full screen over home in an Kali window titled by its `title` or the widget's name. */
 @Composable
 internal fun WidgetScreenPanel(
     spec: WidgetSpec,

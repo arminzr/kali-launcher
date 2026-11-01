@@ -223,7 +223,7 @@ class TerminalFont(
         }
 
         /** Not emoji or icon-only fonts (Symbols Nerd Font, which foot falls back to for glyphs). */
-        fun isTextFont(family: String) = family.isNotEmpty() && !Regex("emoji|signwriting|omarchy|symbols", RegexOption.IGNORE_CASE).containsMatchIn(family)
+        fun isTextFont(family: String) = family.isNotEmpty() && !Regex("emoji|signwriting|kali|symbols", RegexOption.IGNORE_CASE).containsMatchIn(family)
 
         fun format(size: Double): String = String.format(Locale.ROOT, "%.1f", size)
 

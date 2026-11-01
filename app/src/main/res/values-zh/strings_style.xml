@@ -74,10 +74,10 @@
     <string name="style_update">更新</string>
     <string name="style_remove">移除</string>
     <string name="style_remove_theme_title">移除 %1$s？</string>
-    <string name="style_remove_theme_builtin">你对它的修改会被删除；Omarchy 的版本保留。</string>
+    <string name="style_remove_theme_builtin">你对它的修改会被删除；Kali 的版本保留。</string>
     <string name="style_remove_deleted">它会从手机和 Linux 中删除。</string>
-    <string name="style_themes_downloading">正在从 github.com/omacom/omarchy 下载 Omarchy 的其他主题（约 70 MB）。</string>
-    <string name="style_themes_not_installed">Omarchy 的主题还没有安装。它们会从 github.com/omacom/omarchy 下载（约 70 MB）。</string>
+    <string name="style_themes_downloading">正在从 the theme repository on GitHub 下载 Kali 的其他主题（约 70 MB）。</string>
+    <string name="style_themes_not_installed">Kali 的主题还没有安装。它们会从 the theme repository on GitHub 下载（约 70 MB）。</string>
     <string name="style_downloading">正在下载… %1$d MB</string>
     <string name="style_failed">失败：%1$s</string>
     <string name="style_retry">重试</string>
@@ -126,7 +126,7 @@
     <string name="gestures_keybar_until_fixed">修复之前，终端按键栏使用默认按键：%1$s</string>
 
     <string name="agents_title">编程智能体</string>
-    <string name="agents_intro">和 Omarchy 一样用 mise 安装。登录会在浏览器中打开；用键盘的剪贴板粘贴密钥。</string>
+    <string name="agents_intro">和 Kali 一样用 mise 安装。登录会在浏览器中打开；用键盘的剪贴板粘贴密钥。</string>
     <string name="agents_open">打开</string>
     <string name="agents_remove">移除</string>
     <string name="agents_install">安装</string>

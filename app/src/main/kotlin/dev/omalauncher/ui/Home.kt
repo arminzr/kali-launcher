@@ -89,7 +89,7 @@ import dev.omalauncher.widgets.editWidgetCommand
 import dev.omalauncher.widgets.fixDependenciesCommand
 import dev.omalauncher.widgets.newOwlCommand
 
-/** Home pages of JSON widgets on a snap grid, bordered and gapped like Omarchy windows. */
+/** Home pages of JSON widgets on a snap grid, bordered and gapped like Kali windows. */
 @Composable
 fun HomeScreen(
     runtime: Runtime,

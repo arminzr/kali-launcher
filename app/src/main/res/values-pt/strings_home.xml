@@ -39,7 +39,7 @@
     <string name="home_retry">tentar de novo</string>
     <string name="home_fix_with_agent">corrigir com agente</string>
     <string name="home_widget_needs_linux">requer Linux</string>
-    <string name="home_widget_needs_linux_text">executa comandos no Arch Linux opcional</string>
+    <string name="home_widget_needs_linux_text">executa comandos no Kali Linux opcional</string>
 
     <string name="home_terminal_starting">iniciando…</string>
     <string name="home_terminal_exited">encerrado · toque para reiniciar</string>

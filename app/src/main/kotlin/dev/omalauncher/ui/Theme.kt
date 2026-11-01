@@ -81,7 +81,7 @@ class ThemePalette(
 }
 
 /**
- * Launcher colors, driven by the active Omarchy theme. Until one is applied
+ * Launcher colors, driven by the active Kali theme. Until one is applied
  * they're the defaults above, which match Tokyo Night.
  */
 object Palette {
@@ -124,7 +124,7 @@ object LauncherStyle {
     /** What [Mono] draws in: Android's monospace, or a Linux font LauncherFont loaded for [Style.FONT]. */
     var font by mutableStateOf<FontFamily>(FontFamily.Monospace)
 
-    /** App icons as silhouettes in the accent color (Omarchy) rather than their own colors. */
+    /** App icons as silhouettes in the accent color (Kali) rather than their own colors. */
     val monochromeIcons get() = style[Style.MONOCHROME_ICONS]
 
     /** Home screen apps as bare icons on the wallpaper instead of framed tiles. */
@@ -192,7 +192,7 @@ object LauncherStyle {
         }
 }
 
-/** The Style menu's corner presets, from Omarchy's sharp edges to stock Android's round shapes; [scale] multiplies each frame's radius. */
+/** The Style menu's corner presets, from Kali's sharp edges to stock Android's round shapes; [scale] multiplies each frame's radius. */
 enum class Corners(
     /** What launchers before style.toml saved. */
     val id: String,
@@ -223,7 +223,7 @@ fun Modifier.frame(
 }
 
 /**
- * Omarchy's gaps between framed surfaces, like Hyprland's gaps_in and gaps_out. [HomeGap] is between two of
+ * Kali's gaps between framed surfaces, like Hyprland's gaps_in and gaps_out. [HomeGap] is between two of
  * home's tiles (the grid, the strip and the bar); [EdgeGap] is from them to the screen's safe edges; [PanelGap]
  * is from full-screen panels to those edges. The user's, from style.toml.
  */
@@ -284,7 +284,7 @@ object TextSize {
 }
 
 /**
- * The few Nerd Font glyphs omarchy uses that Android lacks: weather (U+E300–E3E3, see
+ * The few Nerd Font glyphs kali uses that Android lacks: weather (U+E300–E3E3, see
  * weatherIcon()) plus the launcher's own [Glyph]s. A subset of Symbols Nerd Font 3.5.1, made
  * with pyftsubset; Weather Icons by Erik Flowers, SIL OFL 1.1; Material Design Icons, Apache 2.0.
  */

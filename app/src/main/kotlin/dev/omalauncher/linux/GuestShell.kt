@@ -55,7 +55,7 @@ class GuestShell(
         timeoutSeconds: Int,
     ): ShellResult {
         ensureStarted()
-        val marker = "__omarchy_done_${counter++}__"
+        val marker = "__kali_done_${counter++}__"
         val quoted = shellQuote(command)
         // stdin is this shell's command pipe, so commands get /dev/null instead of eating the next command.
         // stderr goes to a file and follows the exit code, so it never mixes into the output.

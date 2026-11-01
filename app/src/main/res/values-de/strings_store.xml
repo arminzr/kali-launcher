@@ -101,14 +101,14 @@
     <string name="store_added_panel">✓ in den gesten-einstellungen</string>
     <string name="store_added_keybar">✓ in deinem widgets-ordner</string>
 
-    <string name="store_needs_linux_app">braucht Linux: führt befehle in Arch aus und taucht deshalb erst in der app-übersicht auf, wenn du Linux in den einstellungen installierst</string>
-    <string name="store_needs_linux_widget">braucht Linux: führt befehle in Arch aus und wartet deshalb als platzhalter, bis du Linux in den einstellungen installierst</string>
+    <string name="store_needs_linux_app">braucht Linux: führt befehle in Kali aus und taucht deshalb erst in der app-übersicht auf, wenn du Linux in den einstellungen installierst</string>
+    <string name="store_needs_linux_widget">braucht Linux: führt befehle in Kali aus und wartet deshalb als platzhalter, bis du Linux in den einstellungen installierst</string>
 
     <!-- %1$s lists them by package manager, like "pacman: jq, curl; aur: yay". -->
     <string name="store_installs_packages">installiert pakete: %1$s</string>
     <string name="store_packages_none">keine</string>
     <string name="store_runs_no_commands">führt keine befehle aus</string>
-    <string name="store_runs_commands">führt diese befehle in Arch aus:</string>
+    <string name="store_runs_commands">führt diese befehle in Kali aus:</string>
 
     <!-- What's happening to an entry, while it is. -->
     <string name="store_installing">wird installiert…</string>
@@ -132,7 +132,7 @@
     <string name="store_shared_unnamed_widget">ein widget</string>
     <!-- %1$s is its version and size when it says them, like " · v1.2 · 4x2", or nothing; %2$.1f its size in kilobytes. -->
     <string name="store_shared_info">mit dir geteilt%1$s · %2$.1f KB</string>
-    <string name="store_shared_warning">Füg es nur hinzu, wenn du dem Absender vertraust. Es führt die Befehle unten als du in Arch aus und kommt an deine Dateien und ins Netz.</string>
+    <string name="store_shared_warning">Füg es nur hinzu, wenn du dem Absender vertraust. Es führt die Befehle unten als du in Kali aus und kommt an deine Dateien und ins Netz.</string>
     <!-- %1$d is the version of the widget language it needs. -->
     <string name="store_shared_needs_newer">braucht einen neueren launcher (owl %1$d); aktualisier den launcher, dann klappt\'s</string>
     <!-- %1$s is its name. -->
@@ -192,10 +192,10 @@
     <string name="store_cancel">abbrechen</string>
     <string name="store_add">hinzufügen</string>
 
-    <!-- The community themes listed on omarchy.org/themes. -->
+    <!-- The community themes the theme catalog. -->
     <string name="store_theme_title">community-themes</string>
     <string name="store_theme_search">%1$d themes durchsuchen</string>
-    <string name="store_theme_header">von der community, gelistet auf omarchy.org/themes · installiert von GitHub</string>
+    <string name="store_theme_header">von der community, installiert von GitHub</string>
     <string name="store_theme_in_use">✓ aktiv</string>
     <!-- %1$s is the theme's name. -->
     <string name="store_theme_install_confirm">%1$s installieren?</string>
@@ -203,12 +203,12 @@
     <string name="store_theme_install_message">Von %1$s. Linux bekommt die Farben und Hintergründe, aber nicht die Skripte oder Terminal-Configs.</string>
     <!-- %2$s is the name of the user's own theme it replaces. -->
     <string name="store_theme_install_message_replaces">Von %1$s. Linux bekommt die Farben und Hintergründe, aber nicht die Skripte oder Terminal-Configs.\n\nEs ersetzt dein %2$s.</string>
-    <!-- %2$s is the name of Omarchy's theme of the same name. -->
-    <string name="store_theme_install_message_over">Von %1$s. Linux bekommt die Farben und Hintergründe, aber nicht die Skripte oder Terminal-Configs.\n\nEs überdeckt Omarchys %2$s; entfernst du es, ist das wieder da.</string>
+    <!-- %2$s is the name of Kali's theme of the same name. -->
+    <string name="store_theme_install_message_over">Von %1$s. Linux bekommt die Farben und Hintergründe, aber nicht die Skripte oder Terminal-Configs.\n\nEs überdeckt Kalis %2$s; entfernst du es, ist das wieder da.</string>
     <!-- %1$s is the theme's name, %2$d how many megabytes have downloaded. -->
     <string name="store_theme_installing">installiert %1$s… %2$d MB</string>
     <!-- %1$s is why, an error message from the system. -->
-    <string name="store_theme_catalog_failed">konnte omarchy.org/themes nicht laden: %1$s</string>
+    <string name="store_theme_catalog_failed">konnte die theme-liste nicht laden: %1$s</string>
     <string name="store_theme_page_changed">die seite hat sich geändert, lesen klappt nicht mehr</string>
     <!-- %1$s is what the user gave as the theme's repo. -->
     <string name="store_theme_not_github">kein GitHub-repo: %1$s</string>

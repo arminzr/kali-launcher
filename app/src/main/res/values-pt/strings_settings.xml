@@ -20,7 +20,7 @@
     <string name="settings_linux_installing">instalando · %1$s</string>
     <string name="settings_linux_failed">a instalação parou · tentar de novo</string>
     <string name="settings_linux_removing">removendo…</string>
-    <string name="settings_linux_not_installed">não instalado · instale o Arch Linux para apps de terminal e agentes</string>
+    <string name="settings_linux_not_installed">não instalado · instale o Kali Linux para apps de terminal e agentes</string>
     <string name="settings_agents">agentes de programação</string>
     <string name="settings_agents_default">padrão: %1$s</string>
     <string name="settings_agents_install">instalar Claude Code, OpenCode, …</string>

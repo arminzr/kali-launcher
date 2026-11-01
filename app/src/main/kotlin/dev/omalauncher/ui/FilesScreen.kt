@@ -53,7 +53,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 
-/** A touch-first file manager for the guest filesystem, in the Omarchy theme. */
+/** A touch-first file manager for the guest filesystem, in the Kali theme. */
 @Composable
 fun FilesScreen(
     runtime: Runtime,

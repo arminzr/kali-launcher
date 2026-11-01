@@ -94,7 +94,7 @@ private val COMPONENTS =
             "https://gitlab.freedesktop.org/wayland/wayland-protocols",
         ),
         Component(
-            "Omarchy",
+            "Kali",
             R.string.licenses_use_omarchy,
             "mit",
             "Copyright (c) David Heinemeier Hansson",

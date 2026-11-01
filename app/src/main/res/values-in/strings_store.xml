@@ -76,13 +76,13 @@
     <string name="store_added_panel">✓ di setelan gestur</string>
     <string name="store_added_keybar">✓ di folder widget-mu</string>
 
-    <string name="store_needs_linux_app">perlu Linux: aplikasi ini menjalankan perintah di Arch, jadi baru muncul di laci aplikasi setelah kamu menginstal Linux di setelan</string>
-    <string name="store_needs_linux_widget">perlu Linux: widget ini menjalankan perintah di Arch, jadi menunggu sebagai placeholder sampai kamu menginstal Linux di setelan</string>
+    <string name="store_needs_linux_app">perlu Linux: aplikasi ini menjalankan perintah di Kali, jadi baru muncul di laci aplikasi setelah kamu menginstal Linux di setelan</string>
+    <string name="store_needs_linux_widget">perlu Linux: widget ini menjalankan perintah di Kali, jadi menunggu sebagai placeholder sampai kamu menginstal Linux di setelan</string>
 
     <string name="store_installs_packages">menginstal paket: %1$s</string>
     <string name="store_packages_none">tidak ada</string>
     <string name="store_runs_no_commands">tidak menjalankan perintah</string>
-    <string name="store_runs_commands">menjalankan perintah berikut di Arch:</string>
+    <string name="store_runs_commands">menjalankan perintah berikut di Kali:</string>
 
     <string name="store_installing">menginstal…</string>
     <string name="store_updating">memperbarui…</string>
@@ -98,7 +98,7 @@
     <string name="store_shared_unnamed_app">sebuah aplikasi</string>
     <string name="store_shared_unnamed_widget">sebuah widget</string>
     <string name="store_shared_info">dibagikan kepadamu%1$s · %2$.1f KB</string>
-    <string name="store_shared_warning">Tambahkan hanya jika kamu memercayai pengirimnya. Isinya menjalankan perintah berikut di Arch atas namamu, dengan akses ke file dan jaringanmu.</string>
+    <string name="store_shared_warning">Tambahkan hanya jika kamu memercayai pengirimnya. Isinya menjalankan perintah berikut di Kali atas namamu, dengan akses ke file dan jaringanmu.</string>
     <string name="store_shared_needs_newer">perlu launcher yang lebih baru (owl %1$d); perbarui launcher untuk menambahkannya</string>
     <string name="store_shared_replace">ganti %1$s yang dibagikan sebelumnya</string>
     <string name="store_add_to_drawer">tambah ke laci aplikasi</string>
@@ -144,14 +144,14 @@
 
     <string name="store_theme_title">tema komunitas</string>
     <string name="store_theme_search">cari %1$d tema</string>
-    <string name="store_theme_header">dibuat oleh komunitas, terdaftar di omarchy.org/themes · diinstal dari GitHub</string>
+    <string name="store_theme_header">dibuat oleh komunitas, diinstal dari GitHub</string>
     <string name="store_theme_in_use">✓ dipakai</string>
     <string name="store_theme_install_confirm">instal %1$s?</string>
     <string name="store_theme_install_message">Dari %1$s. Linux mendapat warna dan wallpaper-nya, bukan skrip atau konfigurasi terminalnya.</string>
     <string name="store_theme_install_message_replaces">Dari %1$s. Linux mendapat warna dan wallpaper-nya, bukan skrip atau konfigurasi terminalnya.\n\nTema ini menggantikan %2$s milikmu.</string>
-    <string name="store_theme_install_message_over">Dari %1$s. Linux mendapat warna dan wallpaper-nya, bukan skrip atau konfigurasi terminalnya.\n\nTema ini menimpa %2$s dari Omarchy; menghapus tema ini akan memulihkan %2$s.</string>
+    <string name="store_theme_install_message_over">Dari %1$s. Linux mendapat warna dan wallpaper-nya, bukan skrip atau konfigurasi terminalnya.\n\nTema ini menimpa %2$s dari Kali; menghapus tema ini akan memulihkan %2$s.</string>
     <string name="store_theme_installing">menginstal %1$s… %2$d MB</string>
-    <string name="store_theme_catalog_failed">tidak dapat memuat omarchy.org/themes: %1$s</string>
+    <string name="store_theme_catalog_failed">tidak dapat memuat daftar tema: %1$s</string>
     <string name="store_theme_page_changed">halamannya berubah dan tidak dapat dibaca</string>
     <string name="store_theme_not_github">bukan repo GitHub: %1$s</string>
     <string name="store_theme_not_on_github">%1$s tidak ada di GitHub</string>

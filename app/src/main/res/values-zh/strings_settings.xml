@@ -18,7 +18,7 @@
     <string name="settings_linux_installing">正在安装 · %1$s</string>
     <string name="settings_linux_failed">安装已中止 · 重试</string>
     <string name="settings_linux_removing">正在移除…</string>
-    <string name="settings_linux_not_installed">未安装 · 安装 Arch Linux 即可使用终端应用和智能体</string>
+    <string name="settings_linux_not_installed">未安装 · 安装 Kali Linux 即可使用终端应用和智能体</string>
     <string name="settings_agents">编程智能体</string>
     <string name="settings_agents_default">默认：%1$s</string>
     <string name="settings_agents_install">安装 Claude Code、OpenCode…</string>

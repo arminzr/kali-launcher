@@ -80,13 +80,13 @@
     <string name="store_added_panel">✓ en la configuración de gestos</string>
     <string name="store_added_keybar">✓ en tu carpeta de widgets</string>
 
-    <string name="store_needs_linux_app">requiere Linux: ejecuta comandos en Arch, así que aparece en el cajón de apps cuando instales Linux en configuración</string>
-    <string name="store_needs_linux_widget">requiere Linux: ejecuta comandos en Arch, así que espera como marcador de posición hasta que instales Linux en configuración</string>
+    <string name="store_needs_linux_app">requiere Linux: ejecuta comandos en Kali, así que aparece en el cajón de apps cuando instales Linux en configuración</string>
+    <string name="store_needs_linux_widget">requiere Linux: ejecuta comandos en Kali, así que espera como marcador de posición hasta que instales Linux en configuración</string>
 
     <string name="store_installs_packages">instala paquetes: %1$s</string>
     <string name="store_packages_none">ninguno</string>
     <string name="store_runs_no_commands">no ejecuta comandos</string>
-    <string name="store_runs_commands">ejecuta estos comandos en Arch:</string>
+    <string name="store_runs_commands">ejecuta estos comandos en Kali:</string>
 
     <string name="store_installing">instalando…</string>
     <string name="store_updating">actualizando…</string>
@@ -102,7 +102,7 @@
     <string name="store_shared_unnamed_app">una app</string>
     <string name="store_shared_unnamed_widget">un widget</string>
     <string name="store_shared_info">compartido contigo%1$s · %2$.1f KB</string>
-    <string name="store_shared_warning">Agrégalo solo si confías en quien te lo envió. Ejecuta los comandos de abajo en Arch como tú, con tus archivos y la red.</string>
+    <string name="store_shared_warning">Agrégalo solo si confías en quien te lo envió. Ejecuta los comandos de abajo en Kali como tú, con tus archivos y la red.</string>
     <string name="store_shared_needs_newer">requiere un launcher más nuevo (owl %1$d); actualiza el launcher para agregarlo</string>
     <string name="store_shared_replace">reemplazar %1$s, compartido antes</string>
     <string name="store_add_to_drawer">agregar al cajón de apps</string>
@@ -148,14 +148,14 @@
 
     <string name="store_theme_title">temas de la comunidad</string>
     <string name="store_theme_search">buscar en %1$d temas</string>
-    <string name="store_theme_header">hechos por la comunidad, listados en omarchy.org/themes · instalados desde GitHub</string>
+    <string name="store_theme_header">hechos por la comunidad, instalados desde GitHub</string>
     <string name="store_theme_in_use">✓ en uso</string>
     <string name="store_theme_install_confirm">¿instalar %1$s?</string>
     <string name="store_theme_install_message">De %1$s. Linux recibe sus colores y fondos, no sus scripts ni sus configs de terminal.</string>
     <string name="store_theme_install_message_replaces">De %1$s. Linux recibe sus colores y fondos, no sus scripts ni sus configs de terminal.\n\nReemplaza tu %2$s.</string>
-    <string name="store_theme_install_message_over">De %1$s. Linux recibe sus colores y fondos, no sus scripts ni sus configs de terminal.\n\nReemplaza al %2$s de Omarchy; si lo quitas, vuelve el original.</string>
+    <string name="store_theme_install_message_over">De %1$s. Linux recibe sus colores y fondos, no sus scripts ni sus configs de terminal.\n\nReemplaza al %2$s de Kali; si lo quitas, vuelve el original.</string>
     <string name="store_theme_installing">instalando %1$s… %2$d MB</string>
-    <string name="store_theme_catalog_failed">no se pudo cargar omarchy.org/themes: %1$s</string>
+    <string name="store_theme_catalog_failed">no se pudo cargar la lista de temas: %1$s</string>
     <string name="store_theme_page_changed">la página cambió y no se puede leer</string>
     <string name="store_theme_not_github">no es un repo de GitHub: %1$s</string>
     <string name="store_theme_not_on_github">%1$s no está en GitHub</string>

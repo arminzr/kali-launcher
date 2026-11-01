@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="linux_stage_download">unduh arch linux</string>
+    <string name="linux_stage_download">unduh kali linux</string>
     <string name="linux_stage_extract">ekstrak sistem</string>
     <string name="linux_stage_configure">konfigurasi pacman</string>
-    <string name="linux_stage_packages">instal aplikasi omarchy</string>
+    <string name="linux_stage_packages">instal aplikasi kali</string>
     <string name="linux_stage_agents">instal agen coding</string>
     <string name="linux_stage_agents_named">instal %1$s</string>
 
-    <string name="linux_step_download">Mengunduh Arch Linux ARM</string>
+    <string name="linux_step_download">Mengunduh Kali Linux</string>
     <string name="linux_step_configure">Mengonfigurasi sistem</string>
     <string name="linux_step_forks">Memeriksa apakah program bisa berjalan</string>
     <string name="linux_step_keyring">Menginisialisasi keyring pacman</string>
@@ -63,14 +63,14 @@
     <string name="linux_agent_muse">Agen coding dari Meta</string>
     <string name="linux_agent_kimi">Agen coding dari Moonshot AI</string>
 
-    <string name="linux_welcome_title">omarchy di layar utamamu</string>
-    <string name="linux_welcome_body">Tema dan wallpaper Omarchy, aplikasi Android-mu, dan widget layar utama. Arch Linux menambahkan aplikasi terminal dan agen coding, sekarang atau nanti di setelan.</string>
+    <string name="linux_welcome_title">kali di layar utamamu</string>
+    <string name="linux_welcome_body">Tema dan wallpaper Kali, aplikasi Android-mu, dan widget layar utama. Kali Linux menambahkan aplikasi terminal dan agen coding, sekarang atau nanti di setelan.</string>
     <string name="linux_welcome_linux">linux</string>
-    <string name="linux_welcome_choice">siapkan Arch Linux juga</string>
+    <string name="linux_welcome_choice">siapkan Kali Linux juga</string>
     <string name="linux_welcome_choice_detail">aplikasi terminal, agen, pacman · unduhan ~1 GB, ruang 3 GB</string>
     <string name="linux_welcome_start">mulai</string>
     <string name="linux_welcome_start_linux">mulai dan siapkan linux</string>
-    <string name="linux_welcome_start_hint">Mengunduh wallpaper tema sekarang, dan tema Omarchy lainnya (sekitar 70 MB) di latar belakang.</string>
+    <string name="linux_welcome_start_hint">Mengunduh wallpaper tema sekarang, dan tema Kali lainnya (sekitar 70 MB) di latar belakang.</string>
     <string name="linux_welcome_start_linux_hint">Linux mengunduh sekitar 1 GB, jadi sebaiknya pakai Wi-Fi, dan memakai ruang 3 GB. Penginstalan berjalan di latar belakang selama 10 sampai 20 menit; layar utama langsung siap.</string>
     <string name="linux_welcome_getting">mengunduh %1$s</string>
     <string name="linux_welcome_theme_failed">tema gagal diunduh</string>
@@ -94,13 +94,13 @@
 
     <string name="linux_title">linux</string>
     <string name="linux_removing">menghapus linux…</string>
-    <string name="linux_offer_title">arch linux, opsional</string>
+    <string name="linux_offer_title">kali linux, opsional</string>
     <string name="linux_offer_body">Aplikasi Linux, widget terminal, agen coding, pacman, dan File. Unduhan sekitar 1 GB dan ruang 3 GB; diinstal di latar belakang.</string>
     <string name="linux_install">instal linux</string>
     <plurals name="linux_install_with_agents">
         <item quantity="other">instal linux dan %d agen</item>
     </plurals>
-    <string name="linux_arch">arch linux</string>
+    <string name="linux_arch">kali linux</string>
     <string name="linux_installed_size">terinstal · %1$s</string>
     <string name="linux_measuring">mengukur…</string>
     <string name="linux_remove">hapus linux</string>
@@ -127,7 +127,7 @@
 
     <string name="packages_title">paket</string>
     <string name="packages_search">cari paket</string>
-    <string name="packages_intro">Paket Arch Linux ARM lewat pacman, dan AUR lewat yay. Menginstal juga memperbarui sistem, jadi bisa butuh waktu. Paket AUR dikirim pengguna dan dikompilasi di perangkat: periksa dulu PKGBUILD-nya di aur.archlinux.org.</string>
+    <string name="packages_intro">Paket Kali Linux lewat apt. Menginstal juga memperbarui sistem, jadi bisa butuh waktu.</string>
     <string name="packages_loading">memuat…</string>
     <string name="packages_searching">mencari…</string>
     <string name="packages_installed">terinstal (%1$d)</string>
@@ -160,4 +160,49 @@
     <string name="licenses_use_androidsvg">menggambar ikon SVG</string>
     <string name="licenses_use_zxing">menggambar kode QR untuk berbagi widget</string>
     <string name="licenses_use_json">membaca dan menulis JSON</string>
+
+    <!-- Kali tool collections and root mode -->
+    <string name="linux_tools_title">alat kali</string>
+    <string name="linux_tools_subtitle">Instal koleksi alat Kali</string>
+    <string name="linux_tools_intro">Pilih koleksi alat Kali; unduhan dan penggunaan penyimpanan diperkirakan sebelum dijalankan.</string>
+    <string name="linux_tools_select_all">pilih semua</string>
+    <string name="linux_tools_clear">bersihkan</string>
+    <string name="linux_tools_install">instal</string>
+    <string name="linux_tools_estimating">memperkirakan…</string>
+    <string name="linux_tools_estimate">≈ %1$s unduhan · %2$s di penyimpanan</string>
+    <string name="linux_tools_installing">memasang alat kali</string>
+    <string name="linux_root_mode">mode root (eksperimental)</string>
+    <string name="linux_root_mode_subtitle">jalankan perintah linux lewat su ponsel</string>
+    <string name="linux_root_no_su">tidak menemukan binary su di ponsel ini</string>
+    <string name="linux_tools_top10">alat 10 teratas</string>
+    <string name="linux_tools_information_gathering">pengumpulan informasi</string>
+    <string name="linux_tools_vulnerability">analisis kerentanan</string>
+    <string name="linux_tools_web">aplikasi web</string>
+    <string name="linux_tools_database">basis data</string>
+    <string name="linux_tools_passwords">kata sandi</string>
+    <string name="linux_tools_exploitation">eksploitasi</string>
+    <string name="linux_tools_post_exploitation">pasca-eksploitasi</string>
+    <string name="linux_tools_sniffing_spoofing">sniffing &amp; spoofing</string>
+    <string name="linux_tools_social_engineering">rekayasa sosial</string>
+    <string name="linux_tools_wireless">nirkabel</string>
+    <string name="linux_tools_802_11">nirkabel 802.11</string>
+    <string name="linux_tools_bluetooth">bluetooth</string>
+    <string name="linux_tools_hardware">perangkat keras</string>
+    <string name="linux_tools_crypto_stego">kripto &amp; stego</string>
+    <string name="linux_tools_forensics">forensik</string>
+    <string name="linux_tools_reverse_engineering">rekayasa balik</string>
+    <string name="linux_tools_fuzzing">fuzzing</string>
+    <string name="linux_tools_gpu">alat gpu</string>
+    <string name="linux_tools_identify">identifikasi</string>
+    <string name="linux_tools_detect">deteksi</string>
+    <string name="linux_tools_protect">proteksi</string>
+    <string name="linux_tools_reporting">pelaporan</string>
+    <string name="linux_tools_voip">voip</string>
+    <string name="linux_tools_rfid">rfid</string>
+    <string name="linux_tools_sdr">sdr</string>
+    <string name="linux_tools_recover">pemulihan</string>
+    <string name="linux_tools_respond">respons</string>
+    <string name="linux_tools_windows_resources">sumber daya windows</string>
+    <string name="linux_tools_default">kali linux default</string>
+    <string name="linux_tools_large">kali linux large</string>
 </resources>

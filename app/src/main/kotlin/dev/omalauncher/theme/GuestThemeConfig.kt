@@ -12,7 +12,7 @@ import java.io.File
 
 /**
  * What omarchy-theme-set would write inside the guest: the current theme's
- * rendered templates, plus configs for Omarchy's terminal apps that pick
+ * rendered templates, plus configs for Kali's terminal apps that pick
  * them up. The configs are defaults the user may edit (see [Policy.Seeded]).
  */
 class GuestThemeConfig(
@@ -21,7 +21,7 @@ class GuestThemeConfig(
 ) {
     private val home = proot.home
     private val templatesDir = File(omarchyDir, "default/themed")
-    private val currentDir = File(home, ".local/state/omarchy/current")
+    private val currentDir = File(home, ".local/state/kalilauncher/current")
 
     /**
      * Renders [theme] into current/theme, which foot, btop and the rest
@@ -29,7 +29,7 @@ class GuestThemeConfig(
      */
     fun render(theme: OmarchyTheme) {
         val themeDir = File(currentDir, "theme")
-        // In the guest's home, where Omarchy's own scripts make current/theme a link to a theme: emptied through
+        // In the guest's home, where Kali's own scripts make current/theme a link to a theme: emptied through
         // the link, that theme would be lost.
         LauncherData.deleteTree(themeDir)
         themeDir.mkdirs()
@@ -40,11 +40,11 @@ class GuestThemeConfig(
             val colors = if (tpl.name == "foot.ini.tpl") footColors(theme.colors) else theme.colors
             if (!out.exists()) out.writeText(Templates.render(tpl.readText(), colors))
         }
-        symlink("${Proot.GUEST_HOME}/.local/state/omarchy/current/theme/btop.theme", File(home, ".config/btop/themes/current.theme"))
+        symlink("${Proot.GUEST_HOME}/.local/state/kalilauncher/current/theme/btop.theme", File(home, ".config/btop/themes/current.theme"))
         // Like omarchy-theme-set-claude and -pi; both agents reload the file, so running sessions recolor too.
         // Claude Code's is there to pick in /theme once it has been run; Pi's is picked from the start (see managed()).
-        if (File(home, ".claude").isDirectory) copyTheme(File(themeDir, "claude.json"), ".claude/themes/omarchy.json")
-        copyTheme(File(themeDir, "pi.json"), ".pi/agent/themes/omarchy-system.json")
+        if (File(home, ".claude").isDirectory) copyTheme(File(themeDir, "claude.json"), ".claude/themes/kali.json")
+        copyTheme(File(themeDir, "pi.json"), ".pi/agent/themes/kali-system.json")
     }
 
     private fun copyTheme(
@@ -54,7 +54,7 @@ class GuestThemeConfig(
         if (src.isFile) writeAtomically(File(home, to), src.readBytes())
     }
 
-    /** Mirrors Omarchy's ~/.local/state/omarchy/current/background symlink. */
+    /** Mirrors Kali's ~/.local/state/kalilauncher/current/background symlink. */
     fun linkBackground(file: File) {
         proot.guestPath(file)?.let { symlink(it, File(currentDir, "background")) }
     }
@@ -68,7 +68,7 @@ class GuestThemeConfig(
         runCatching { Os.symlink(target, link.path) }
     }
 
-    /** Configs for Omarchy's terminal apps and GTK, the latter in [theme]'s colors. */
+    /** Configs for Kali's terminal apps and GTK, the latter in [theme]'s colors. */
     fun managed(theme: OmarchyTheme?): List<Managed> {
         val files = ArrayList<Managed>()
         fun seed(
@@ -76,7 +76,7 @@ class GuestThemeConfig(
             content: () -> String,
         ) = files.add(Managed.text(File(home, path), Policy.Seeded, content = content))
 
-        /** Omarchy's own config for an app, as its installer seeds it. */
+        /** Kali's own config for an app, as its installer seeds it. */
         fun copy(
             from: String,
             to: String,
@@ -86,7 +86,7 @@ class GuestThemeConfig(
         }
 
         seed(".config/foot/foot.ini") { FOOT_INI }
-        // Omarchy's bash setup (aliases, starship, zoxide, fzf) reads everything from $OMARCHY_PATH.
+        // Kali's bash setup (aliases, starship, zoxide, fzf) reads everything from $OMARCHY_PATH.
         seed(".bashrc") { BASHRC }
         File(omarchyDir, "etc/fastfetch/config.jsonc").takeIf { it.isFile }?.let { src ->
             // In portrait the side-by-side logo leaves ~20 columns for the info; stack it on top.
@@ -95,13 +95,13 @@ class GuestThemeConfig(
         // btop rewrites its config on exit; from then on it's the user's.
         copy("config/btop/btop.conf", ".config/btop/btop.conf")
         files.add(Managed.text(File(proot.rootfs, "usr/local/bin/btop"), Policy.Owned, executable = true) { BTOP })
-        copy("icon.txt", ".config/omarchy/branding/about.txt")
+        copy("icon.txt", ".config/kalilauncher/branding/about.txt")
         copy("config/starship.toml", ".config/starship.toml")
         copy("config/lazygit/config.yml", ".config/lazygit/config.yml")
         copy("config/tmux/tmux.conf", ".config/tmux/tmux.conf")
-        // Pi in the theme render() copies, as Omarchy's install runs omarchy-theme-set-pi --activate, and OpenCode
+        // Pi in the theme render() copies, as Kali's install runs omarchy-theme-set-pi --activate, and OpenCode
         // in its system theme, which takes the terminal's colors; OpenCode 2 reads it from tui.json, not opencode.json.
-        seed(".pi/agent/settings.json") { "{\n  \"theme\": \"omarchy-system\"\n}\n" }
+        seed(".pi/agent/settings.json") { "{\n  \"theme\": \"kali-system\"\n}\n" }
         seed(".config/opencode/opencode.json") { OPENCODE_JSON }
         seed(".config/opencode/tui.json") { "{\n  \"theme\": \"system\"\n}\n" }
         if (theme != null) {
@@ -135,11 +135,11 @@ class GuestThemeConfig(
                 emit("19", "selection_foreground")
                 for (i in 0..15) c["color$i"]?.let { append("\u001b]4;$i;$it\u0007") }
             }
-        proot.hostFile("/tmp/omarchy-osc").writeText(osc)
+        proot.hostFile("/tmp/kali-osc").writeText(osc)
         val script =
             "for p in \$(pgrep -x foot); do for c in \$(pgrep -P \$p); do " +
-                "t=\$(readlink /proc/\$c/fd/1); case \$t in /dev/pts/*) cat /tmp/omarchy-osc > \$t;; esac; done; done; " +
-                // Like omarchy-restart-btop: btop reloads its theme on SIGUSR2.
+                "t=\$(readlink /proc/\$c/fd/1); case \$t in /dev/pts/*) cat /tmp/kali-osc > \$t;; esac; done; done; " +
+                // Like upstream restart-btop: btop reloads its theme on SIGUSR2.
                 "pkill -SIGUSR2 btop; true"
         runCatching { proot.run(script) }
     }
@@ -156,13 +156,13 @@ class GuestThemeConfig(
         }
 
         /**
-         * Omarchy's foot.ini, sized for a phone: the font comes from [TerminalFont], which
+         * Kali's foot.ini, sized for a phone: the font comes from [TerminalFont], which
          * follows the screen and Android's font size. Nerd glyphs come via fontconfig fallback.
          */
         val FOOT_INI =
             """
             [main]
-            include=~/.local/state/omarchy/current/theme/foot.ini
+            include=~/.local/state/kalilauncher/current/theme/foot.ini
             term=xterm-256color
             include=${TerminalFont.PATH}
             pad=8x8
@@ -206,7 +206,7 @@ class GuestThemeConfig(
             exec /usr/bin/btop -c "${'$'}narrow"
             """.trimIndent() + "\n"
 
-        /** OpenCode's updates come through mise with the other agents, as on Omarchy. */
+        /** OpenCode's updates come through mise with the other agents, as on Kali. */
         val OPENCODE_JSON =
             """
             {
@@ -218,7 +218,7 @@ class GuestThemeConfig(
 
         val BASHRC =
             """
-            export OMARCHY_PATH=/root/.local/share/omarchy
+            export OMARCHY_PATH=/root/.local/share/kalilauncher
             export EDITOR=omarchy-edit VISUAL=omarchy-edit
             [[ $- != *i* ]] && return
             [[ -f ${'$'}OMARCHY_PATH/default/bash/rc ]] && source "${'$'}OMARCHY_PATH/default/bash/rc"

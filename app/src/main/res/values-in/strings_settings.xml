@@ -18,7 +18,7 @@
     <string name="settings_linux_installing">menginstal · %1$s</string>
     <string name="settings_linux_failed">penyiapan berhenti · coba lagi</string>
     <string name="settings_linux_removing">menghapus…</string>
-    <string name="settings_linux_not_installed">belum terinstal · instal Arch Linux untuk aplikasi terminal dan agen</string>
+    <string name="settings_linux_not_installed">belum terinstal · instal Kali Linux untuk aplikasi terminal dan agen</string>
     <string name="settings_agents">agen coding</string>
     <string name="settings_agents_default">default: %1$s</string>
     <string name="settings_agents_install">instal Claude Code, OpenCode, …</string>
