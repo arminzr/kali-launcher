@@ -202,7 +202,7 @@ class Runtime(
             InstantActivity.startInstantly(
                 context,
                 Intent()
-                    .setClassName(context, "dev.omalauncher.$activity")
+                    .setClassName(context, context.packageName + ".$activity")
                     .setData(Uri.parse("omarchy://window/$handle"))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK),
             )

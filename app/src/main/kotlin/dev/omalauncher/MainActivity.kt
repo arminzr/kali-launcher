@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Debug builds: `adb shell am start -n dev.omalauncher/.MainActivity --es exec foot`,
+     * Debug builds: `adb shell am start -n ir.arminz.kalilauncher/.MainActivity --es exec foot`,
      * or `--es theme kanagawa` to apply a theme (scripts/collage-captures.sh).
      */
     private fun handleDebugExec(intent: Intent) {

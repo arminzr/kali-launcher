@@ -32,9 +32,21 @@ jobs:
 
       # Builds with proot (scripts/fetch-proot.sh needs bsdtar), so the debug APK is installable.
       - name: Build and lint
+        env:
+          KALI_KEYSTORE_B64: ${{ secrets.KALI_KEYSTORE_B64 }}
+          KALI_KEYSTORE_PASS: ${{ secrets.KALI_KEYSTORE_PASS }}
         run: |
           sudo apt-get update && sudo apt-get install -y libarchive-tools
           ./scripts/fetch-proot.sh
+          if [ -n "$KALI_KEYSTORE_B64" ]; then
+            echo "$KALI_KEYSTORE_B64" | base64 -d > kalilauncher.jks
+            cat > keystore.properties <<EOF
+storeFile=kalilauncher.jks
+storePassword=$KALI_KEYSTORE_PASS
+keyAlias=kalilauncher
+keyPassword=$KALI_KEYSTORE_PASS
+EOF
+          fi
           ./gradlew :app:assembleDebug :app:lintDebug
 
       - name: Upload the debug APK

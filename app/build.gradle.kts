@@ -18,7 +18,7 @@ android {
     ndkVersion = prootNdk
 
     defaultConfig {
-        applicationId = "dev.omalauncher"
+        applicationId = "ir.arminz.kalilauncher"
         minSdk = 29
         targetSdk = 37
         versionCode = 28
@@ -60,7 +60,10 @@ android {
 
     buildTypes {
         // en-XA and ar-XB: text that stays plain English or left-to-right there isn't in res/ yet.
-        debug { isPseudoLocalesEnabled = true }
+        debug {
+            isPseudoLocalesEnabled = true
+            signingConfig = signingConfigs.getByName(if (uploadKey != null) "release" else "debug")
+        }
         release {
             // Shrinks the APK and drops what the app doesn't use, like the owl module's unused parts.
             isMinifyEnabled = true
